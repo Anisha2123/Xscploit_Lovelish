@@ -1,16 +1,17 @@
 
 const mongoose = require("mongoose");
+// const { default: paymentLink } = require("razorpay/dist/types/paymentLink");
 const paymentSchema = new mongoose.Schema({
   userId: String,
   email: String,
   courseName: String,
   courseSlug: String,
   moduleIndex: Number,
-  amount: Number,
+  paymentLinkId: String,
   paymentId: String,
   method: String,
-  status: String,
-  timestamp: { type: Date, default: Date.now },
+  status: { type: String, default: "pending" },
+  timestamp: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model("Payment", paymentSchema);
