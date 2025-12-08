@@ -1,9 +1,13 @@
 
 const mongoose = require("mongoose");
 const purchaseSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
-  purchasedModules: { type: [Number], default: [] },
-  fullCoursePurchased: { type: Boolean, default: false }
+    userId: String,
+  courseId: String,
+  moduleIndex: Number,     // null if full course
+  amount: Number,
+  paymentId: String,
+  orderId: String,
+  status: String,
 });
 
 module.exports = mongoose.model("Purchase", purchaseSchema);
