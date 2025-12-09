@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const purchaseSchema = new mongoose.Schema({
     userId: String,
   courseId: String,
-  moduleIndex: Number,     // null if full course
+  moduleIndex: { type: [Number], default: [] },
   amount: Number,
   paymentId: String,
   orderId: String,

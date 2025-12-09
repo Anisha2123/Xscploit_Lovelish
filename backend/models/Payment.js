@@ -6,7 +6,7 @@ const paymentSchema = new mongoose.Schema({
   email: String,
   courseName: String,
   courseSlug: String,
-  moduleIndex: Number,
+  moduleIndex: { type: [Number], default: [] },
   paymentLinkId: String,
   paymentId: String,
   method: String,
