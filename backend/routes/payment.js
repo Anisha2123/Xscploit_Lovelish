@@ -151,19 +151,55 @@ console.log(`email is ${user.email}`);
 // GET user's purchased modules for a specific course
 
 
+// router.get("/payments/user", async (req, res) => {
+//     console.log(`paymets/user started`);
+//   try {
+//     const { userId, courseSlug } = req.query;
+
+//     const purchase = await Purchase.findOne({ userId, courseId: courseSlug });
+
+//     if (!purchase) {
+//       return res.json({ unlockedModules: [] });
+//     }
+
+//     res.json({
+//       unlockedModules: purchase.moduleIndex || []
+//     });
+
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 router.get("/payments/user", async (req, res) => {
-    console.log(`paymets/user started`);
+  console.log("payments/user started");
+
   try {
     const { userId, courseSlug } = req.query;
 
-    const purchase = await Purchase.findOne({ userId, courseId: courseSlug });
+    const purchase = await Purchase.findOne({
+      userId,
+      courseId: courseSlug
+    });
 
     if (!purchase) {
-      return res.json({ unlockedModules: [] });
+    return res.json({
+      unlockedModules: [],
+      fullCoursePurchased: false
+    });
+  }
+
+    // 🔥 FULL COURSE PURCHASE → unlock everything
+    if (purchase.fullCoursePurchased) {
+      return res.json({
+        unlockedModules: purchase.modulesUnlocked || [],
+    fullCoursePurchased: purchase.fullCoursePurchased || false
+      });
     }
 
-    res.json({
-      unlockedModules: purchase.moduleIndex || []
+    // 🔥 PARTIAL PURCHASE → unlock selected modules
+    return res.json({
+      unlockedModules: purchase.modulesUnlocked || [],
+    fullCoursePurchased: purchase.fullCoursePurchased || false
     });
 
   } catch (err) {
@@ -172,8 +208,18 @@ router.get("/payments/user", async (req, res) => {
 });
 
 
+
 router.post("/module/create", async (req, res) => {
   const { userId, courseId, moduleIndex, price, slug } = req.body;
+  console.log(`module create link started`);
+  console.log({
+  userId,
+  courseId,
+  price,
+  slug,
+  amountCalculated: price * 100
+});
+
 
   const paymentLink = await razor.paymentLink.create({
     amount: price * 100,
@@ -184,7 +230,8 @@ router.post("/module/create", async (req, res) => {
     notes: {
       userId,
       courseId,
-      moduleIndex
+      moduleIndex,
+      paymentType: "MODULE"
     },
     callback_url: `http://localhost:5173/course/${slug}`,
     callback_method: "get"
@@ -197,13 +244,39 @@ router.post("/module/create", async (req, res) => {
   });
 });
 
+router.post("/course/create", async (req, res) => {
+  console.log(`course create link started`);
+  const { userId, courseId, price, slug } = req.body;
+  console.log({
+  userId,
+  courseId,
+  price,
+  slug,
+  amountCalculated: price * 100
+});
 
 
+  const paymentLink = await razor.paymentLink.create({
+    amount: price * 100,
+    currency: "INR",
+    description: `Payment for Module  ${courseId}`,
+    
+    // NOTES IS VERY IMPORTANT – STORES USER & COURSE INFO
+    notes: {    
+      userId,
+      courseId,
+      paymentType: "FULL"
+    },
+    callback_url: `http://localhost:5173/course/${slug}`,
+    callback_method: "get"
+  });
 
-
-
-
-
+  res.json({
+    success: true,
+    paymentLink: paymentLink.short_url,   // open this in frontend
+    paymentLinkId: paymentLink.id         // used in webhook confirmation
+  });
+});
 
 router.get("/purchase/:userId", async (req, res) => {
   const purchase = await Purchase.findOne({ userId: req.params.userId });
