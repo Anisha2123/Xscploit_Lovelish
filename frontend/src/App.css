@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* Courses */
+.cards {
+  width: 100%;
+  /* display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px; */
+  display: grid;
+  justify-content: center;
+  flex-direction: row;
+  /* border:1px solid red; */
+}
+/* For screens larger than 1024px (laptop/tablet) */
+@media (min-width: 1024px) {
+  .cards {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 1024px) {
+  .cards {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .cards {
+    grid-template-columns: repeat(1,1fr);
+  }
+}
+.cyber-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid #00e6b8;
+  box-shadow: 0 0 10px #00e6b8;
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+/* About us */
+.left1, .right1{
+  /* width: 50%; */
+  /* border:1px solid red; */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icons a{
+  font-size: 2rem;
+  /* border:1px solid red; */
+}
+/* Navbar */
+@media (max-width: 1024px)
+{
+  .menu{
+  display: none;
+}
+}
+
+/* CourseDetails page */
+.bg-grid-pattern {
+  background-image: radial-gradient(#00ff9d15 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.desktop-nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktop-nav {
+    display: flex;
+  }
+}
+
+
