@@ -18,7 +18,7 @@ const Xsploit = () => {
 
   return (
    <>
-   <Navbar/>
+   {/* <Navbar/> */}
    <Hero />
    <TrustBar/>
    <Courses/>
@@ -29,7 +29,7 @@ const Xsploit = () => {
    <Testimonials />
    <CTA />
    {/* <Pricing/> */}
-   <Footer/>
+   {/* <Footer/> */}
    </>
   )
 }

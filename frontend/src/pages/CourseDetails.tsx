@@ -12,7 +12,7 @@ import {
   Boxes,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
-
+import Footer from "../components/footer";
 
 
 const CourseDetails = () => {
@@ -132,22 +132,52 @@ useEffect(() => {
   return (
    
     <div className="min-h-screen w-full bg-[#0a0d10] bg-grid-pattern bg-fixed bg-cover bg-center text-white pt-25 p-6 md:p-25">
-        <Navbar />
+        {/* <Navbar /> */}
       {/* Overlay Glow */}
       <div className="fixed inset-0 bg-gradient-to-b from-transparent via-[#00ff9d05] to-[#00ff9d10] pointer-events-none"></div>
 
       <div className="max-w-5xl mx-auto relative z-10">
 
         {/* Header */}
-        <div className="mb-10 text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-[#00ffb3] drop-shadow-[0_0_15px_#00ffb380]">
-            {course.name}
-          </h1>
+        <div className="mb-12 text-center">
+  {/* Title */}
+  <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-white">
+    <span className="text-[#00ff9d]">{course.name}</span>
+  </h1>
 
-          <p className="text-gray-300 mt-4 text-lg max-w-2xl mx-auto leading-relaxed">
-            {course.shortDescription}
-          </p>
-        </div>
+  {/* Description */}
+  <p className="mt-4 text-gray-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+    {course.shortDescription}
+  </p>
+
+  {/* Meta Info */}
+  <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-sm text-gray-400">
+    
+    <span className="flex items-center gap-2">
+      <span className="w-2 h-2 rounded-full bg-[#00ff9d]" />
+      <span className="text-[#00ff9d] font-medium">4.8</span> rating
+    </span>
+
+    <span className="h-3 w-px bg-[#00ff9d20]" />
+
+    <span>1,240 learners</span>
+
+    <span className="h-3 w-px bg-[#00ff9d20]" />
+
+    <span>Updated Dec 2025</span>
+
+    <span className="h-3 w-px bg-[#00ff9d20]" />
+
+    <span>Lifetime access</span>
+  </div>
+
+  {/* Subtle Neon Divider */}
+  <div className="mt-10 h-px w-40 mx-auto bg-gradient-to-r from-transparent via-[#00ff9d80] to-transparent" />
+</div>
+
+<div className="mt-10 h-px w-full max-w-xl mx-auto bg-white/5" />
+
+
 
         {/* Info Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
@@ -165,6 +195,19 @@ useEffect(() => {
           <li className="flex gap-2 items-center"><CheckCircle size={18} className="text-[#00ff9d]" /> Vulnerability & penetration testing</li>
           <li className="flex gap-2 items-center"><CheckCircle size={18} className="text-[#00ff9d]" /> Secure coding & threat analysis</li>
         </ul>
+
+        <div className="mb-6">
+  <p className="text-sm text-gray-400 mb-2">Course Progress</p>
+  <div className="w-full bg-[#11161d] rounded-full h-2">
+    <div
+      className="bg-[#00ff9d] h-2 rounded-full"
+      style={{
+        width: `${(unlocked.length / course.modules.length) * 100}%`
+      }}
+    />
+  </div>
+</div>
+
 
         {/* Modules */}
         <SectionHeading title="Modules Included" />
@@ -244,6 +287,8 @@ useEffect(() => {
           </p>
         </div>
 
+        
+
         {/* Full Course / Explore Button */}
 {!fullCoursePurchased ? (
   <button
@@ -254,7 +299,7 @@ useEffect(() => {
   </button>
 ) : (
   <a
-    href="http://localhost:5173/Xsploit"
+    href="http://localhost:5173/courses"
     className="block text-center w-full py-4 text-xl bg-[#0c0f13] text-[#00ff9d] rounded-xl font-bold border border-[#00ff9d] hover:bg-[#00ff9d] hover:text-black transition-all"
   >
     Explore Other Courses
@@ -264,7 +309,9 @@ useEffect(() => {
 
         <div className="h-20"></div>
       </div>
+    
     </div>
+    
   );
 };
 
@@ -283,4 +330,5 @@ const SectionHeading = ({ title }: any) => (
   <h2 className="text-2xl font-bold text-[#00ff9d] mb-4 mt-12 drop-shadow-[0_0_10px_#00ff9d80]">
     {title}
   </h2>
+ 
 );

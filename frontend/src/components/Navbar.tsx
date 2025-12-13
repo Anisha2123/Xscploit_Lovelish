@@ -6,13 +6,15 @@ import "../App.css";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const userId = localStorage.getItem("userId"); // or wherever you store it
 
   const navLinks = [
-    { label: "Home", path: "/" },
+    { label: "Home", path: "/Xsploit" },
     { label: "Courses", path: "/courses" },
-    { label: "Labs", path: "/labs" },
-    { label: "Pricing", path: "/pricing" },
+    // { label: "Labs", path: "/labs" },
+    // { label: "Pricing", path: "/pricing" },
     { label: "Contact", path: "/contact" },
+    { label: "Profile", path: `/profile/${userId}` },
   ];
 
   return (
@@ -50,9 +52,9 @@ const Navbar = () => {
 
           {/* Profile */}
           <User
-            className="ml-2 w-5 h-5 cursor-pointer text-gray-400 hover:text-white transition"
-            onClick={() => navigate("/profile")}
-          />
+  className="ml-2 w-5 h-5 cursor-pointer text-gray-400 hover:text-white transition"
+  onClick={() => navigate(`/profile/${userId}`)}
+/>
         </nav>
 
         {/* Mobile Menu Icon */}

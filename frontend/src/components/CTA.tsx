@@ -31,7 +31,7 @@ const CTA = () => {
 
         {/* CTA Button */}
         <button
-  onClick={() => window.location.href = "/Xsploit"}
+  onClick={() => window.location.href = "/courses"}
   className="mt-8 px-10 py-4 bg-[#00ff9d] text-black font-semibold rounded-xl text-lg shadow-lg hover:scale-105 transition-transform duration-300"
 >
   Explore Courses
