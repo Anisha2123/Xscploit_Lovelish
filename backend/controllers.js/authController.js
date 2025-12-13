@@ -7,7 +7,8 @@ const jwt = require("jsonwebtoken");
 const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-
+     console.log(`sign rout hit `);
+     console.log(req.body);
     // 1. Validate missing fields
     if (!name || !email || !password) {
       return res.status(400).json({ error: "MISSING_FIELDS" });
