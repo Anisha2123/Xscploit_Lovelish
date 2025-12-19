@@ -319,7 +319,7 @@ router.get("/courses/:courseId/module/:index/unlocked", async (req, res) => {
 });
 
 function verifyRazorpaySig(req, res, buf) {
-  const expectedSig = createHmac("sha256", process.env.RZP_WEBHOOK_SECRET)
+  const expectedSig = createHmac("sha256", process.env.RAZORPAY_WEBHOOK_SECRET)
     .update(buf)
     .digest("hex");
 
@@ -332,22 +332,27 @@ function verifyRazorpaySig(req, res, buf) {
 /**
  * 🔐 Signature verification
  */
+import crypto from "crypto";
+
 export const webhookHandler = async (req, res) => {
   try {
     const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
+    // Convert raw body to string
+    const body = req.body.toString("utf8");
+
+    // Signature verification
     const shasum = crypto.createHmac("sha256", secret);
-    shasum.update(req.body);
+    shasum.update(body);
     const digest = shasum.digest("hex");
 
     const razorpaySignature = req.headers["x-razorpay-signature"];
-
     if (digest !== razorpaySignature) {
       console.error("❌ Invalid Razorpay signature");
       return res.status(400).send("Invalid signature");
     }
 
-    const payload = JSON.parse(req.body.toString());
+    const payload = JSON.parse(body);
     const event = payload.event;
 
     console.log("🔥 WEBHOOK HIT:", event);
@@ -366,7 +371,7 @@ export const webhookHandler = async (req, res) => {
           moduleIndex: paymentType === "MODULE" ? Number(moduleIndex) : null,
           paymentId: payment.id,
           paymentType,
-          status: "paid"
+          status: "paid",
         },
         { upsert: true }
       );
@@ -376,7 +381,7 @@ export const webhookHandler = async (req, res) => {
           { userId, courseId },
           {
             $addToSet: { modulesUnlocked: Number(moduleIndex) },
-            status: "partial"
+            status: "partial",
           },
           { upsert: true }
         );
@@ -392,7 +397,7 @@ export const webhookHandler = async (req, res) => {
           {
             fullCoursePurchased: true,
             modulesUnlocked: allModules,
-            status: "paid"
+            status: "paid",
           },
           { upsert: true }
         );
@@ -406,6 +411,7 @@ export const webhookHandler = async (req, res) => {
     res.status(500).send("Webhook error");
   }
 };
+
 
 /**
  * Normal payment routes
