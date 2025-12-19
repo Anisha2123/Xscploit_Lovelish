@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const API = axios.create({
-  baseURL: `${import.meta.env.VITE_FRONTEND_URL}`,
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}`,
 });
 
 // Optional: Automatically attach token
