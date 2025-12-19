@@ -228,19 +228,20 @@ router.post("/module/create", async (req, res) => {
     if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) {
       throw new Error("Razorpay keys missing in env");
     }
+    console.log("CALLBACK URL =>", `${process.env.FRONTEND_URL}/course/${slug}`);
 
     const paymentLink = await razor.paymentLink.create({
       amount: Number(price) * 100,
       currency: "INR",
       description: `Payment for Module ${moduleIndex + 1}`,
-
+     
       notes: {
         userId,
         courseId,
         moduleIndex,
         paymentType: "MODULE",
       },
-
+      
       callback_url: `${process.env.FRONTEND_URL}/course/${slug}`,
       callback_method: "get",
     });
