@@ -21,6 +21,16 @@ config();
 connectDB();
 
 const app = express();
+
+/**
+ * 🔥 Razorpay webhook MUST come before express.json()
+ */
+app.post(
+  "/api/pay/webhook",
+  express.raw({ type: "application/json" }),
+  paymentRoutes.webhookHandler // 👈 we will export this
+);
+
 app.use(json());
 
 

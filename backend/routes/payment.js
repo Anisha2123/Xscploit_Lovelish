@@ -329,32 +329,48 @@ function verifyRazorpaySig(req, res, buf) {
     throw new Error("Invalid Razorpay Signature");
   }
 }
+/**
+ * 🔐 Signature verification
+ */
+export const webhookHandler = async (req, res) => {
+  try {
+    const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
-router.post("/webhook", json({ verify: verifyRazorpaySig }), async (req, res) => {
-  const event = req.body.event;
-  console.log("WEBHOOK HIT:", event);
+    const shasum = crypto.createHmac("sha256", secret);
+    shasum.update(req.body);
+    const digest = shasum.digest("hex");
 
-  if (event === "payment_link.paid") {
-    const link = req.body.payload.payment_link.entity;
-    const payment = req.body.payload.payment.entity;
+    const razorpaySignature = req.headers["x-razorpay-signature"];
 
-    const { userId, courseId, moduleIndex, paymentType } = link.notes;
- 
-    // 🔥 1) Update / Insert Payment Entry
-    await Payment.findOneAndUpdate(
-      { paymentLinkId: link.id },
-      {
-        userId,
-        courseSlug: courseId,
-        moduleIndex: paymentType === "MODULE" ? Number(moduleIndex) : null,
-        paymentId: payment.id,
-        paymentType,
-        status: "paid"
-      },
-      { upsert: true }
-    );
+    if (digest !== razorpaySignature) {
+      console.error("❌ Invalid Razorpay signature");
+      return res.status(400).send("Invalid signature");
+    }
 
-     // 2️⃣ Update purchase logic
+    const payload = JSON.parse(req.body.toString());
+    const event = payload.event;
+
+    console.log("🔥 WEBHOOK HIT:", event);
+
+    if (event === "payment_link.paid") {
+      const link = payload.payload.payment_link.entity;
+      const payment = payload.payload.payment.entity;
+
+      const { userId, courseId, moduleIndex, paymentType } = link.notes;
+
+      await Payment.findOneAndUpdate(
+        { paymentLinkId: link.id },
+        {
+          userId,
+          courseSlug: courseId,
+          moduleIndex: paymentType === "MODULE" ? Number(moduleIndex) : null,
+          paymentId: payment.id,
+          paymentType,
+          status: "paid"
+        },
+        { upsert: true }
+      );
+
       if (paymentType === "MODULE") {
         await Purchase.findOneAndUpdate(
           { userId, courseId },
@@ -364,32 +380,96 @@ router.post("/webhook", json({ verify: verifyRazorpaySig }), async (req, res) =>
           },
           { upsert: true }
         );
-
         console.log("✅ Module unlocked:", moduleIndex);
       }
 
       if (paymentType === "FULL") {
-
         const course = await Course.findOne({ slug: courseId });
-
-  const allModuleIndexes = course.modules.map((_, idx) => idx);
+        const allModules = course.modules.map((_, idx) => idx);
 
         await Purchase.findOneAndUpdate(
           { userId, courseId },
           {
             fullCoursePurchased: true,
-            modulesUnlocked: allModuleIndexes,
+            modulesUnlocked: allModules,
             status: "paid"
           },
           { upsert: true }
         );
-
         console.log("🎉 Full course unlocked");
       }
     }
 
-  res.json({ status: "ok" });
-});
+    res.status(200).json({ status: "ok" });
+  } catch (err) {
+    console.error("❌ WEBHOOK ERROR:", err);
+    res.status(500).send("Webhook error");
+  }
+};
+
+/**
+ * Normal payment routes
+ */
+// router.post("/webhook", json({ verify: verifyRazorpaySig }), async (req, res) => {
+//   const event = req.body.event;
+//   console.log("WEBHOOK HIT:", event);
+
+//   if (event === "payment_link.paid") {
+//     const link = req.body.payload.payment_link.entity;
+//     const payment = req.body.payload.payment.entity;
+
+//     const { userId, courseId, moduleIndex, paymentType } = link.notes;
+ 
+//     // 🔥 1) Update / Insert Payment Entry
+//     await Payment.findOneAndUpdate(
+//       { paymentLinkId: link.id },
+//       {
+//         userId,
+//         courseSlug: courseId,
+//         moduleIndex: paymentType === "MODULE" ? Number(moduleIndex) : null,
+//         paymentId: payment.id,
+//         paymentType,
+//         status: "paid"
+//       },
+//       { upsert: true }
+//     );
+
+//      // 2️⃣ Update purchase logic
+//       if (paymentType === "MODULE") {
+//         await Purchase.findOneAndUpdate(
+//           { userId, courseId },
+//           {
+//             $addToSet: { modulesUnlocked: Number(moduleIndex) },
+//             status: "partial"
+//           },
+//           { upsert: true }
+//         );
+
+//         console.log("✅ Module unlocked:", moduleIndex);
+//       }
+
+//       if (paymentType === "FULL") {
+
+//         const course = await Course.findOne({ slug: courseId });
+
+//   const allModuleIndexes = course.modules.map((_, idx) => idx);
+
+//         await Purchase.findOneAndUpdate(
+//           { userId, courseId },
+//           {
+//             fullCoursePurchased: true,
+//             modulesUnlocked: allModuleIndexes,
+//             status: "paid"
+//           },
+//           { upsert: true }
+//         );
+
+//         console.log("🎉 Full course unlocked");
+//       }
+//     }
+
+//   res.json({ status: "ok" });
+// });
 
 
 export default router;
