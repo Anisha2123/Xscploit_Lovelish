@@ -15,6 +15,8 @@ const router = Router();
 import Course from "./models/Course.js";
 import User from "./models/User.js";
 // import auth from "./config/"
+import { webhookHandler } from "./routes/payment.js";
+
 import pkg from "./config/db.js"
 const {connectDB} = pkg;
 config();
@@ -28,8 +30,9 @@ const app = express();
 app.post(
   "/api/pay/webhook",
   express.raw({ type: "application/json" }),
-  paymentRoutes.webhookHandler // 👈 we will export this
+  webhookHandler
 );
+
 
 app.use(json());
 
