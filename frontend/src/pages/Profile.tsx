@@ -1,30 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { FaUserCircle, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import  baseURL  from "../utils/api";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import  API  from "../utils/api";
 
 const Profile: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [courses, setCourses] = useState<any[]>([]);
   const [payments, setPayments] = useState<any[]>([]);
   const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
+  const location = useLocation();
 
+if (!userId) {
+  return (
+    <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 bg-black">
+      <h2 className="text-2xl font-bold text-white mb-3">
+        Login Required
+      </h2>
+
+      <p className="text-gray-400 mb-6 max-w-md">
+        Please login to view course details and access premium content.
+      </p>
+
+      <button
+        onClick={() =>
+          navigate("/", {
+            state: { from: location.pathname }
+          })
+        }
+        className="px-6 py-3 bg-[#00ff9d] text-black font-semibold rounded-lg hover:scale-105 transition"
+      >
+        Login to Continue
+      </button>
+    </div>
+  );
+}
   useEffect(() => {
-  if (!userId) return;
+  
 
   // Fetch user info
-  axios.get(`${baseURL}/api/users/${userId}`)
+  API.get(`/users/${userId}`)
     .then(res => setUser(res.data))
     .catch(err => console.error(err));
 
   // Fetch purchases
-  axios.get(`${baseURL}/api/users/${userId}/purchases`)
+  API.get(`/users/${userId}/purchases`)
     .then(res => setCourses(res.data))
     .catch(err => console.error(err));
 
   // Fetch payments
-  axios.get(`${baseURL}/api/users/${userId}/payments`)
+  API.get(`/users/${userId}/payments`)
     .then(res => setPayments(res.data))
     .catch(err => console.error(err));
 }, [userId]);
@@ -90,7 +116,7 @@ const Profile: React.FC = () => {
         <button
           onClick={() => {
             localStorage.removeItem("userId");
-            window.location.href = "/login";
+            window.location.href = "/";
           }}
           className="px-6 py-2 rounded-lg bg-[#00ff9d] text-black text-sm font-semibold hover:opacity-90 transition"
         >

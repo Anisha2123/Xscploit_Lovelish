@@ -3,11 +3,19 @@ import AuthInput from "../components/AuthInput";
 import { API } from "../utils/api";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
+  const navigate = useNavigate();
+const location = useLocation();
+
+const from = location.state?.from || "/Xsploit";
+
 
   const handleLogin = async () => {
   // --- FRONTEND VALIDATION ---
@@ -32,9 +40,11 @@ const Login = () => {
     console.log(`userd is ${userId}`);
 
     setMsg(message || "Login successful.");
+    // after successful login
+    
 
     setTimeout(() => {
-      window.location.href = "/Xsploit";
+      navigate(from, { replace: true });
     }, 500);
 
   } catch (e: any) {

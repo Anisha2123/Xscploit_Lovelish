@@ -31,17 +31,17 @@ const Courses: React.FC = () => {
   }, []);
 
   const allCourses = [
-  {
-    slug: "kali-linux-001",
-    title: "KALI LINUX",
-    desc: "Master the most powerful OS for penetration testing and forensics tools.",
-    icon: <Shield size={42} />,
-    duration: "2 Months",
-    level: "Beginner",
-    oldPrice: "₹15,000",
-    price: "₹9,999",
-    image:"/images/card1.png"
-  },
+  // {
+  //   slug: "kali-linux-001",
+  //   title: "KALI LINUX",
+  //   desc: "Master the most powerful OS for penetration testing and forensics tools.",
+  //   icon: <Shield size={42} />,
+  //   duration: "2 Months",
+  //   level: "Beginner",
+  //   oldPrice: "₹15,000",
+  //   price: "₹9,999",
+  //   image:"/images/card1.png"
+  // },
   {
     slug: "ceh-002",
     title: "CERTIFIED ETHICAL HACKING",
@@ -75,17 +75,17 @@ const Courses: React.FC = () => {
     price: "₹9,999",
     image:"/images/card1.png"
   },
-  {
-    slug: "android-hacking-005",
-    title: "ANDROID HACKING",
-    desc: "Analyze APKs, reverse engineer apps, exploit mobile security.",
-    icon: <Smartphone size={42} />,
-    duration: "2 Months",
-    level: "Pro",
-    oldPrice: "₹18,000",
-    price: "₹9,999",
-    image:"/images/card1.png"
-  },
+  // {
+  //   slug: "android-hacking-005",
+  //   title: "ANDROID HACKING",
+  //   desc: "Analyze APKs, reverse engineer apps, exploit mobile security.",
+  //   icon: <Smartphone size={42} />,
+  //   duration: "2 Months",
+  //   level: "Pro",
+  //   oldPrice: "₹18,000",
+  //   price: "₹9,999",
+  //   image:"/images/card1.png"
+  // },
   {
     slug: "ai-hacking-006",
     title: "HACKING WITH AI",

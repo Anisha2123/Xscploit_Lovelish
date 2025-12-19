@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 const CourseDetails = () => {
@@ -20,14 +21,40 @@ const CourseDetails = () => {
   const [course, setCourse] = useState<any>(null);
   const [unlocked, setUnlocked] = useState([]);
   const [fullCoursePurchased, setFullCoursePurchased] = useState(false);
+  const navigate = useNavigate();
+const location = useLocation();
 
+const userId = localStorage.getItem("userId");
+if (!userId) {
+  return (
+    <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 bg-black">
+      <h2 className="text-2xl font-bold text-white mb-3">
+        Login Required
+      </h2>
 
+      <p className="text-gray-400 mb-6 max-w-md">
+        Please login to view course details and access premium content.
+      </p>
+
+      <button
+        onClick={() =>
+          navigate("/", {
+            state: { from: location.pathname }
+          })
+        }
+        className="px-6 py-3 bg-[#00ff9d] text-black font-semibold rounded-lg hover:scale-105 transition"
+      >
+        Login to Continue
+      </button>
+    </div>
+  );
+}
   
   useEffect(() => {
     API.get(`/courses/${courseId}`).then((res) => setCourse(res.data.course));
   }, [courseId]);
 
-  const userId = localStorage.getItem("userId");
+  
 
   // Load User's Unlocked Modules from Backend
 useEffect(() => {
@@ -36,10 +63,7 @@ useEffect(() => {
   console.log("➡ course object:", course);
   console.log("➡ course.slug:", course?.slug);
 
-  if (!userId) {
-    console.log("⛔ Stopping: No userId found in localStorage");
-    return;
-  }
+  
 
   if (!course?.slug) {
     console.log("⛔ Stopping: course or course.slug not ready yet");

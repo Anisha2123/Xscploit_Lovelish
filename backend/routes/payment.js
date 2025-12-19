@@ -73,6 +73,7 @@ import Course from "../models/Course.js";
 import User from "../models/User.js";
 import axios from "axios";
 const {get} =axios ;
+
 const razor = new Razorpay({
   key_id: process.env.RAZORPAY_KEY,
   key_secret: process.env.RAZORPAY_SECRET,
@@ -211,39 +212,56 @@ router.get("/payments/user", async (req, res) => {
 
 
 router.post("/module/create", async (req, res) => {
-  const { userId, courseId, moduleIndex, price, slug } = req.body;
-  console.log(`module create link started`);
-  console.log({
-  userId,
-  courseId,
-  price,
-  slug,
-  amountCalculated: price * 100
-});
+  try {
+    const { userId, courseId, moduleIndex, price, slug } = req.body;
 
-
-  const paymentLink = await razor.paymentLink.create({
-    amount: price * 100,
-    currency: "INR",
-    description: `Payment for Module ${moduleIndex + 1} - ${courseId}`,
-    
-    // NOTES IS VERY IMPORTANT – STORES USER & COURSE INFO
-    notes: {
+    console.log("✅ MODULE CREATE HIT", {
       userId,
       courseId,
       moduleIndex,
-      paymentType: "MODULE"
-    },
-    callback_url: `${import.meta.env.VITE_FRONTEND_URL}/course/${slug}`,
-    callback_method: "get"
-  });
+      price,
+      slug,
+      frontendUrl: process.env.FRONTEND_URL,
+      razorKey: process.env.RAZORPAY_KEY ? "FOUND" : "MISSING",
+    });
 
-  res.json({
-    success: true,
-    paymentLink: paymentLink.short_url,   // open this in frontend
-    paymentLinkId: paymentLink.id         // used in webhook confirmation
-  });
+    if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) {
+      throw new Error("Razorpay keys missing in env");
+    }
+
+    const paymentLink = await razor.paymentLink.create({
+      amount: Number(price) * 100,
+      currency: "INR",
+      description: `Payment for Module ${moduleIndex + 1}`,
+
+      notes: {
+        userId,
+        courseId,
+        moduleIndex,
+        paymentType: "MODULE",
+      },
+
+      callback_url: `${process.env.FRONTEND_URL}/course/${slug}`,
+      callback_method: "get",
+    });
+
+    console.log("✅ PAYMENT LINK CREATED:", paymentLink.short_url);
+
+    return res.json({
+      success: true,
+      paymentLink: paymentLink.short_url,
+      paymentLinkId: paymentLink.id,
+    });
+
+  } catch (err) {
+    console.error("❌ MODULE PAYMENT ERROR:", err);
+    return res.status(500).json({
+      success: false,
+      message: err.message || "Payment failed",
+    });
+  }
 });
+
 
 router.post("/course/create", async (req, res) => {
   console.log(`course create link started`);
@@ -268,7 +286,7 @@ router.post("/course/create", async (req, res) => {
       courseId,
       paymentType: "FULL"
     },
-    callback_url: `${import.meta.env.VITE_FRONTEND_URL}/course/${slug}`,
+    callback_url: `${process.env.VITE_FRONTEND_URL}/course/${slug}`,
     callback_method: "get"
   });
 

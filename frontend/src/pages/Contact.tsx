@@ -1,6 +1,6 @@
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { useState } from "react";
-import  baseURL  from "../utils/api";
+import  API  from "../utils/api";
 
 const Contact = () => {
  const [formData, setFormData] = useState({
@@ -17,23 +17,18 @@ const Contact = () => {
   };
 
      const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const res = await fetch(`${baseURL}/api/contact`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+  try {
+    const res = await API.post("/contact", formData);
 
-    const data = await res.json();
+    alert("Message sent successfully!");
+    setFormData({ name: "", email: "", message: "" });
 
-    if (res.ok) {
-      alert("Message sent successfully!");
-      setFormData({ name: "", email: "", message: "" });
-    } else {
-      alert(data.message || "Failed to send");
-    }
-  };
+  } catch (err: any) {
+    alert(err.response?.data?.message || "Failed to send");
+  }
+};
 
 
   return (
