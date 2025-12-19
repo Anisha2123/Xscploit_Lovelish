@@ -1,7 +1,7 @@
 import { Router, json } from "express";
 import Stripe from "stripe";
 import Purchase from "../models/Purchase.js";
-
+import dotenv from dotenv;
 const router = Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -221,14 +221,14 @@ router.post("/module/create", async (req, res) => {
       moduleIndex,
       price,
       slug,
-      frontendUrl: process.env.FRONTEND_URL,
+      frontendUrl: process.env.CLIENT_URL,
       razorKey: process.env.RAZORPAY_KEY ? "FOUND" : "MISSING",
     });
 
     if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) {
       throw new Error("Razorpay keys missing in env");
     }
-    console.log("CALLBACK URL =>", `${process.env.FRONTEND_URL}/course/${slug}`);
+    console.log("CALLBACK URL =>", `${process.env.CLIENT_URLL}/course/${slug}`);
 
     const paymentLink = await razor.paymentLink.create({
       amount: Number(price) * 100,
@@ -242,7 +242,7 @@ router.post("/module/create", async (req, res) => {
         paymentType: "MODULE",
       },
       
-      callback_url: `${process.env.FRONTEND_URL}/course/${slug}`,
+      callback_url: `${process.env.CLIENT_URL}/course/${slug}`,
       callback_method: "get",
     });
 
@@ -287,7 +287,7 @@ router.post("/course/create", async (req, res) => {
       courseId,
       paymentType: "FULL"
     },
-    callback_url: `${process.env.VITE_FRONTEND_URL}/course/${slug}`,
+    callback_url: `${process.env.CLIENT_URL}/course/${slug}`,
     callback_method: "get"
   });
 
