@@ -1,8 +1,8 @@
-const express = require("express");
-const Stripe = require("stripe");
-const Purchase = require("../models/Purchase.js");
+import { Router, json } from "express";
+import Stripe from "stripe";
+import Purchase from "../models/Purchase.js";
 
-const router = express.Router();
+const router = Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Pay for a single module
@@ -64,14 +64,15 @@ router.post("/pay/course-pay", async (req, res) => {
 
 
 
-const crypto = require("crypto");
-
-const Razorpay = require("razorpay");
-const Payment = require("../models/Payment.js");
-const Course = require("../models/Course.js");
-const User = require("../models/User.js");
-const axios = require("axios");
-
+import { createHmac } from "crypto";
+import dotenv from "dotenv";
+dotenv.config(); // 👈 MUST BE FIRST
+import Razorpay from "razorpay";
+import Payment from "../models/Payment.js";
+import Course from "../models/Course.js";
+import User from "../models/User.js";
+import axios from "axios";
+const {get} =axios ;
 const razor = new Razorpay({
   key_id: process.env.RAZORPAY_KEY,
   key_secret: process.env.RAZORPAY_SECRET,
@@ -111,7 +112,7 @@ console.log(`email is ${user.email}`);
 
 
     // 2. Fetch payment link details
-    const response = await axios.get(
+    const response = await get(
       `https://api.razorpay.com/v1/payment_links/${paymentId}`,
       {
         auth: {
@@ -233,7 +234,7 @@ router.post("/module/create", async (req, res) => {
       moduleIndex,
       paymentType: "MODULE"
     },
-    callback_url: `http://localhost:5173/course/${slug}`,
+    callback_url: `${import.meta.env.VITE_FRONTEND_URL}/course/${slug}`,
     callback_method: "get"
   });
 
@@ -267,7 +268,7 @@ router.post("/course/create", async (req, res) => {
       courseId,
       paymentType: "FULL"
     },
-    callback_url: `http://localhost:5173/course/${slug}`,
+    callback_url: `${import.meta.env.VITE_FRONTEND_URL}/course/${slug}`,
     callback_method: "get"
   });
 
@@ -299,8 +300,7 @@ router.get("/courses/:courseId/module/:index/unlocked", async (req, res) => {
 });
 
 function verifyRazorpaySig(req, res, buf) {
-  const expectedSig = crypto
-    .createHmac("sha256", process.env.RZP_WEBHOOK_SECRET)
+  const expectedSig = createHmac("sha256", process.env.RZP_WEBHOOK_SECRET)
     .update(buf)
     .digest("hex");
 
@@ -311,7 +311,7 @@ function verifyRazorpaySig(req, res, buf) {
   }
 }
 
-router.post("/webhook", express.json({ verify: verifyRazorpaySig }), async (req, res) => {
+router.post("/webhook", json({ verify: verifyRazorpaySig }), async (req, res) => {
   const event = req.body.event;
   console.log("WEBHOOK HIT:", event);
 
@@ -373,4 +373,4 @@ router.post("/webhook", express.json({ verify: verifyRazorpaySig }), async (req,
 });
 
 
-module.exports = router;
+export default router;

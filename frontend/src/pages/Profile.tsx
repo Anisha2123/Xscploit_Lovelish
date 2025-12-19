@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaUserCircle, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import  baseURL  from "../utils/api";
 
 const Profile: React.FC = () => {
   const [user, setUser] = useState<any>(null);
@@ -13,17 +14,17 @@ const Profile: React.FC = () => {
   if (!userId) return;
 
   // Fetch user info
-  axios.get(`http://localhost:5000/api/users/${userId}`)
+  axios.get(`${baseURL}/api/users/${userId}`)
     .then(res => setUser(res.data))
     .catch(err => console.error(err));
 
   // Fetch purchases
-  axios.get(`http://localhost:5000/api/users/${userId}/purchases`)
+  axios.get(`${baseURL}/api/users/${userId}/purchases`)
     .then(res => setCourses(res.data))
     .catch(err => console.error(err));
 
   // Fetch payments
-  axios.get(`http://localhost:5000/api/users/${userId}/payments`)
+  axios.get(`${baseURL}/api/users/${userId}/payments`)
     .then(res => setPayments(res.data))
     .catch(err => console.error(err));
 }, [userId]);

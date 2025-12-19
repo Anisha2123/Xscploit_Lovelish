@@ -1,7 +1,7 @@
 
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 // const { default: paymentLink } = require("razorpay/dist/types/paymentLink");
-const paymentSchema = new mongoose.Schema({
+const paymentSchema = new Schema({
   userId: String,
   email: String,
   courseName: String,
@@ -14,4 +14,4 @@ const paymentSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model("Payment", paymentSchema);
+export default model("Payment", paymentSchema);

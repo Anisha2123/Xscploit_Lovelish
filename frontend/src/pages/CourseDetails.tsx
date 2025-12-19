@@ -299,7 +299,7 @@ useEffect(() => {
   </button>
 ) : (
   <a
-    href="http://localhost:5173/courses"
+    href={`${import.meta.env.VITE_FRONTEND_URL}/courses`}
     className="block text-center w-full py-4 text-xl bg-[#0c0f13] text-[#00ff9d] rounded-xl font-bold border border-[#00ff9d] hover:bg-[#00ff9d] hover:text-black transition-all"
   >
     Explore Other Courses

@@ -1,8 +1,8 @@
 
-const User = require("../models/User.js");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
+import User from "../models/User.js";
+import { hash, compare } from "bcryptjs";
+import pkg from 'jsonwebtoken';        
+const { sign } = pkg;
 
 const signup = async (req, res) => {
   try {
@@ -34,7 +34,7 @@ const signup = async (req, res) => {
     }
 
     // 5. Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hash(password, 10);
 
     // 6. Auto-generate unique userId (like professional SaaS platforms)
     const userId = "USR-" + Math.random().toString(36).substr(2, 9).toUpperCase();
@@ -80,13 +80,13 @@ const login = async (req, res) => {
     }
 
     // === Password check ===
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await compare(password, user.password);
     if (!isMatch) { 
       return res.status(400).json({ error: "WRONG_PASSWORD" });
     }
 
     // === JWT Token ===
-    const token = jwt.sign(
+    const token = sign(
       { id: user._id, userId: user.userId },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
@@ -105,4 +105,4 @@ const login = async (req, res) => {
 };
 
 
-module.exports = { signup, login };
+export default { signup, login };

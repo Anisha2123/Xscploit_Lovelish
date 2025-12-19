@@ -1,12 +1,12 @@
 
-const express = require("express");
-const Course = require("../models/Course.js");
+import { Router } from "express";
+import Course from "../models/Course.js";
 
-const router = express.Router();
+const router = Router();
 
 
 router.get("/", async (req, res) => {
-    console.log(`yhis one`);
+    console.log(`this one`);
     return res.status(200).json({ message: "Hello from course route!" });
 });
 
@@ -38,4 +38,4 @@ router.get("/:slug", async (req, res) => {
 
 
 
-module.exports = router;
+export default router;

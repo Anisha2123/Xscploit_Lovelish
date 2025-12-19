@@ -1,6 +1,6 @@
 
-const mongoose = require("mongoose");
-const purchaseSchema = new mongoose.Schema({
+import { Schema, model } from "mongoose";
+const purchaseSchema = new Schema({
   userId: String,
   courseId: String,
 
@@ -15,4 +15,4 @@ const purchaseSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model("Purchase", purchaseSchema);
+export default model("Purchase", purchaseSchema);

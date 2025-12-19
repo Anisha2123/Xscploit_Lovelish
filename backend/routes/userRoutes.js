@@ -1,8 +1,8 @@
-const express = require("express");
-const router = express.Router();
-const User = require("../models/User");
-const Purchase = require("../models/Purchase");
-const Payment = require("../models/Payment");
+import { Router } from "express";
+const router = Router();
+import  User  from "../models/User.js";
+import  Purchase  from "../models/Purchase.js";
+import  Payment  from "../models/Payment.js";
 
 // Get user profile info
 router.get("/:userId", async (req, res) => {
@@ -40,4 +40,4 @@ router.get("/:userId/payments", async (req, res) => {
 
 
 
-module.exports = router;
+export default router;

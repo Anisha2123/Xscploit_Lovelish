@@ -1,7 +1,7 @@
-const express = require("express");
-const nodemailer = require("nodemailer");
+import { Router } from "express";
+import { createTransport } from "nodemailer";
 
-const router = express.Router();
+const router = Router();
 
 router.post("/", async (req, res) => {
   try {
@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
     }
   console.log(process.env.EMAIL_PASS.length);
 
-    const transporter = nodemailer.createTransport({
+    const transporter = createTransport({
       service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
@@ -48,4 +48,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

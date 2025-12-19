@@ -1,12 +1,12 @@
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const moduleSchema = new mongoose.Schema({
+const moduleSchema = new Schema({
   title: { type: String, required: true },
   price: { type: Number, default: 3999 },
   pdfUrl: { type: String }, // PDF shown AFTER payment
 });
 
-const courseSchema = new mongoose.Schema({
+const courseSchema = new Schema({
   name: { type: String, required: true },
   shortDescription: String,
   modules: [moduleSchema],
@@ -14,4 +14,4 @@ const courseSchema = new mongoose.Schema({
   fullCoursePrice: { type: Number, required: true },
 });  
 
-module.exports = mongoose.model("Courses", courseSchema);
+export default model("Courses", courseSchema);
