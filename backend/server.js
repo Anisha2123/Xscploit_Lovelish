@@ -52,6 +52,9 @@ app.use("/api/users", userRoutes);
 app.use("/api/contact", contactRoutes);
 
 
-app.listen(process.env.PORT, "0.0.0.0", () => {
-  console.log(`Server running on ${process.env.PORT}`);
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on ${PORT}`);
 });
+
