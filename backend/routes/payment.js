@@ -228,7 +228,7 @@ router.post("/module/create", async (req, res) => {
     if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) {
       throw new Error("Razorpay keys missing in env");
     }
-    console.log("CALLBACK URL =>", `${process.env.CLIENT_URLL}/course/${slug}`);
+    console.log("CALLBACK URL =>", `${process.env.CLIENT_URL}/course/${slug}`);
 
     const paymentLink = await razor.paymentLink.create({
       amount: Number(price) * 100,
