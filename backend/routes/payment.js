@@ -65,7 +65,7 @@ router.post("/pay/course-pay", async (req, res) => {
 
 
 import { createHmac } from "crypto";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 dotenv.config(); // 👈 MUST BE FIRST
 import Razorpay from "razorpay";
 import Payment from "../models/Payment.js";
