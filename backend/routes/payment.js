@@ -1,7 +1,7 @@
 import { Router, json } from "express";
 import Stripe from "stripe";
 import Purchase from "../models/Purchase.js";
-import dotenv from dotenv;
+// import dotenv from dotenv;
 const router = Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -65,7 +65,7 @@ router.post("/pay/course-pay", async (req, res) => {
 
 
 import { createHmac } from "crypto";
-// import dotenv from "dotenv";
+import dotenv from "dotenv";
 dotenv.config(); // 👈 MUST BE FIRST
 import Razorpay from "razorpay";
 import Payment from "../models/Payment.js";
