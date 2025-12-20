@@ -34,13 +34,33 @@ app.post(
 );
 
 
-app.use(json());
+const allowedOrigins = [
+  "https://www.xsploithack.com",
+  "https://xsploithack.com"
+];
 
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow mobile apps / curl / postman
+      if (!origin) return callback(null, true);
 
-app.use(cors({
-  origin: process.env.CLIENT_URL,
-  credentials: true
-}));
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      callback(new Error("Not allowed by CORS"));
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
+  })
+);
+
+// IMPORTANT: explicitly handle preflight
+app.options("*", cors());
+
+app.use(express.json());
 
 
 

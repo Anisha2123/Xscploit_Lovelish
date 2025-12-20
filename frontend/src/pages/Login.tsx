@@ -15,6 +15,7 @@ const Login = () => {
 const location = useLocation();
 
 const from = location.state?.from || "/Xsploit";
+ console.log("API BASE URL:", import.meta.env.VITE_API_BASE_URL);
 
 
   const handleLogin = async () => {

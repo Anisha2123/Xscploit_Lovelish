@@ -5,5 +5,8 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
   ],
-  
+  build: {
+    emptyOutDir: true
+  }
+
 })
