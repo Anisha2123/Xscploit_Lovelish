@@ -52,7 +52,7 @@ const Courses: React.FC = () => {
     duration: "3 Months",
     level: "Intermediate",
     oldPrice: "₹25,000",
-    price: "₹11,999",
+    price: "₹14,999",
     image:"/images/card1.png"
   },
   {
@@ -63,7 +63,7 @@ const Courses: React.FC = () => {
     duration: "2.5 Months",
     level: "Pro",
     oldPrice: "₹22,000",
-    price: "₹9,999",
+    price: "₹14,999",
     image:"/images/card1.png"
   },
   {
@@ -74,7 +74,7 @@ const Courses: React.FC = () => {
     duration: "2 Months",
     level: "Intermediate",
     oldPrice: "₹20,000",
-    price: "₹9,999",
+    price: "₹14,999",
     image:"/images/card1.png"
   },
   // {
@@ -96,7 +96,7 @@ const Courses: React.FC = () => {
     duration: "1.5 Months",
     level: "Intermediate",
     oldPrice: "₹19,000",
-    price: "₹9,999",
+    price: "₹3,999",
     image:"/images/card1.png"
   },
   {
@@ -107,7 +107,7 @@ const Courses: React.FC = () => {
     duration: "2 Months",
     level: "Beginner",
     oldPrice: "₹17,000",
-    price: "₹9,999",
+    price: "₹3,999",
     image:"/images/card1.png"
   },
 ];
