@@ -71,9 +71,18 @@ router.post("/verify-otp", async (req, res) => {
       record.attempts += 1;
 
       /* 🔥 LOCK AFTER 5 ATTEMPTS */
-      if (record.attempts >= 5) {
-        record.lockedUntil = new Date(now.getTime() + 15 * 60 * 1000); // 15 min
-      }
+  if (record.attempts >= 5) {
+    record.lockedUntil = new Date(now.getTime() + 15 * 60 * 1000); // 15 min
+    await record.save();
+
+    return res.status(423).json({
+      error: "OTP_LOCKED",
+      retryAfter: Math.ceil(
+        (record.lockedUntil.getTime() - now.getTime()) / 1000
+      ),
+      attemptsLeft: 0,
+    });
+  }
 
       await record.save();
 

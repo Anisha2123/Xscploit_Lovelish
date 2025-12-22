@@ -126,7 +126,8 @@ const [step, setStep] = useState<Step>("FORM");
 
 case "OTP_LOCKED":
       setIsLocked(true);
-      setLockTimer(data?.retryAfter);
+      const retry = Number(data?.retryAfter);
+setLockTimer(!isNaN(retry) && retry > 0 ? retry : 60);
       setAttemptsLeft(0);
       setStep("OTP");
       // setMsg("");
