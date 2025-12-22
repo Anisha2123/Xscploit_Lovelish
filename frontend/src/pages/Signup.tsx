@@ -94,13 +94,13 @@ const validateName = (name: string) => {
     setMsg("Password does not meet security requirements.");
     return;
   }
-      if (!email) return setMsg("Email is required");
-  if (!name) return setMsg("Name is required");
-
-
-  const nameError = validateName(name);
-  if (nameError) return setMsg(nameError);
-
+  if (!email) return setMsg("Email is required");
+   
+  if (isLocked && lockTimer > 0) {
+    console.log(`running send otp `)
+  setMsg(`Please wait ${lockTimer}s before retrying.`);
+  return;
+}
     try {
       setLoading(true);
       setMsg("");
@@ -123,11 +123,11 @@ const validateName = (name: string) => {
     case "OTP_LOCKED":
       setIsLocked(true);
       setLockTimer(data.retryAfter);
+      setCanResend(false);
       setStep("OTP")
-      // setMsg(
-      //   `Too many attempts. Try again in ${data.retryAfter}s.`
-      // );
-      setMsg("");
+      setMsg(`Too1 many attempts. Try again in ${data.retryAfter}s.`);
+      // setMsg("");
+      return ;
       break;
 
     case "RESEND_TOO_SOON":
@@ -149,6 +149,69 @@ const validateName = (name: string) => {
       setLoading(false);
     }
   };
+  // const sendOtp = async () => {
+  //   const { isValid } = validatePassword(password);
+
+  // if (!isValid) {
+  //   setMsg("Password does not meet security requirements.");
+  //   return;
+  // }
+  //     if (!email) return setMsg("Email is required");
+  // if (!name) return setMsg("Name is required");
+
+
+  // const nameError = validateName(name);
+  // if (nameError) return setMsg(nameError);
+
+  //   try {
+  //     setLoading(true);
+  //     setMsg("");
+
+  //     await API.post("/auth/send-otp", { email });
+
+  //     setStep("OTP");
+  //     setResendTimer(60)
+  //     setCanResend(false)
+  //     setMsg("OTP sent to your email.");
+  //   } catch (e: any) {
+  //      const data = e.response?.data;
+  // const error = data?.error;
+
+  // switch (error) {
+  //   case "EMAIL_REQUIRED":
+  //     setMsg("Email is required.");
+  //     break;
+
+  //   case "OTP_LOCKED":
+  //     setIsLocked(true);
+  //     setLockTimer(data.retryAfter);
+  //     setStep("OTP")
+  //     setMsg(
+  //       `Too many attempts. Try again in ${data.retryAfter}s.`
+  //     );
+  //     // setMsg("");
+  //     break;
+
+  //   case "RESEND_TOO_SOON":
+  //     setMsg(
+  //       `Please wait ${data.retryAfter}s before requesting a new OTP.`
+  //     );
+  //     setCanResend(false);
+  //     setTimer(data.retryAfter);
+  //     setMsg(`Rsesend after ${setTimer}`)
+  //     break;
+
+  //   case "OTP_FAILED":
+  //     setMsg("Unable to send OTP at the moment. Please try later.");
+  //     break;
+
+  //   default:
+  //     setMsg("Something went wrong. Please try again.");
+  //   }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   /* STEP 2: VERIFY OTP + SIGNUP */
   const verifyOtp = async () => {

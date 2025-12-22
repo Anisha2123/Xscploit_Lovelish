@@ -109,10 +109,10 @@ const signup = async (req, res) => {
      
     // 3. Validate password strength
     // At least 8 chars, 1 letter, 1 number
-    const passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    if (!passRegex.test(password)) {
-      return res.status(400).json({ error: "WEAK_PASSWORD" });
-    }
+    // const passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    // if (!passRegex.test(password)) {
+    //   return res.status(400).json({ error: "WEAK_PASSWORD" });
+    // }
    
 
     // 4. Check if user already exists
