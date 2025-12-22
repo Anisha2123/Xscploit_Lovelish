@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Shield, Cpu, Network, Globe, Smartphone, Brain, Bug } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
+import { MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
+
 
 const Courses: React.FC = () => {
   const [showMore, setShowMore] = useState(false);
@@ -50,8 +52,8 @@ const Courses: React.FC = () => {
     duration: "3 Months",
     level: "Intermediate",
     oldPrice: "₹25,000",
-    price: "₹9,999",
-    image:"/images/card2.png"
+    price: "₹11,999",
+    image:"/images/card1.png"
   },
   {
     slug: "network-pentest-003",
@@ -234,6 +236,32 @@ const Courses: React.FC = () => {
       </div>
     )}
   </div>
+  {/* Offline Availability Info */}
+<div className="mt-16 flex justify-center">
+  <div className="max-w-3xl w-full text-center text-sm text-gray-400">
+    
+    <div className="flex items-center justify-center gap-2 mb-2">
+      <MapPin size={14} className="text-[#00ff9d]" />
+      <span>
+        Offline classroom training is available for select courses in
+        <span className="text-white font-medium"> Mumbai</span>.
+      </span>
+    </div>
+
+    <p className="text-gray-500">
+      Sessions are conducted in small batches with hands-on lab access.
+      For availability and schedules,
+      <Link
+        to="/contact"
+        className="ml-1 text-[#00ff9d] hover:underline"
+      >
+        contact us
+      </Link>.
+    </p>
+
+  </div>
+</div>
+
 </section>
 
   );

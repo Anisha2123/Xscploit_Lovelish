@@ -1,6 +1,8 @@
-import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
+import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
 import { useState } from "react";
 import  API  from "../utils/api";
+import ContactInfo from "../components/ui/ContactInfo"
+
 
 const Contact = () => {
  const [formData, setFormData] = useState({
@@ -46,33 +48,45 @@ const Contact = () => {
       </div>
 
       {/* Content Grid */}
-      <div className="max-w-6xl mx-5 grid sm:grid-cols-2 gap-12">
+      <div className="max-w-6xl mx-5 grid sm:grid-cols-2 gap-12 items-center">
 
         {/* Left: Contact Info */}
         <div className="space-y-6">
 
-          <ContactInfo
-            icon={<FaEnvelope />}
-            title="Email"
-            value="support@xsploit.com"
-            description="Reach out for technical or billing support"
-          />
+  <ContactInfo
+    icon={<FaEnvelope />}
+    title="Email"
+    value="xsploithack@gmail.com"
+    description="Reach out for technical or billing support"
+    href="mailto:xsploithack@gmail.com"
+  />
 
-          <ContactInfo
-            icon={<FaPhoneAlt />}
-            title="Phone"
-            value="+91 98765 43210"
-            description="Available Mon–Fri, 10AM–6PM IST"
-          />
+  <ContactInfo
+    icon={<FaPhoneAlt />}
+    title="Phone"
+    value="+91 9619370942"
+    description="Available Mon–Fri, 10AM–6PM IST"
+    href="tel:+919619370942"
+  />
 
-          <ContactInfo
-            icon={<FaMapMarkerAlt />}
-            title="Office"
-            value="India"
-            description="Remote-first, globally available"
-          />
+  {/* <ContactInfo
+    icon={<FaWhatsapp />}
+    title="WhatsApp"
+    value="+91 9619370942"
+    description="Chat with us on WhatsApp"
+    href="https://wa.me/919619370942"
+  /> */}
 
-        </div>
+  <ContactInfo
+    icon={<FaMapMarkerAlt />}
+    title="Office"
+    value="India"
+    description="Remote-first, globally available"
+    href="https://www.google.com/maps/search/India"
+  />
+
+</div>
+
 
         {/* Right: Contact Form */}
         <div className="bg-[#0b0f14] border border-[#00ff9d15] rounded-2xl p-8 shadow-lg">
@@ -130,16 +144,16 @@ const Contact = () => {
 export default Contact;
 
 
-const ContactInfo = ({ icon, title, value, description }: any) => (
-  <div className="flex items-start gap-4 bg-[#0b0f14] border border-[#00ff9d10] rounded-xl p-5">
-    <div className="text-[#00ff9d] text-lg mt-1">{icon}</div>
-    <div>
-      <p className="text-sm text-gray-400">{title}</p>
-      <p className="text-base font-medium text-white">{value}</p>
-      <p className="text-xs text-gray-500 mt-1">{description}</p>
-    </div>
-  </div>
-);
+// const ContactInfo = ({ icon, title, value, description }: any) => (
+//   <div className="flex items-start gap-4 bg-[#0b0f14] border border-[#00ff9d10] rounded-xl p-5">
+//     <div className="text-[#00ff9d] text-lg mt-1">{icon}</div>
+//     <div>
+//       <p className="text-sm text-gray-400">{title}</p>
+//       <p className="text-base font-medium text-white">{value}</p>
+//       <p className="text-xs text-gray-500 mt-1">{description}</p>
+//     </div>
+//   </div>
+// );
 
 const Input = ({ label, type = "text", placeholder }: any) => (
   <div>

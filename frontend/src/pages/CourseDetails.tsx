@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../utils/api";
+import { MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
+
 import {
   Lock,
   Unlock,
@@ -329,9 +332,32 @@ useEffect(() => {
     Explore Other Courses
   </a>
 )}
+  {/* Offline Availability */}
+<div className="mt-22 text-center text-sm text-gray-400">
+  
+  <div className="flex items-center justify-center gap-2 mb-2">
+    <MapPin size={14} className="text-[#00ff9d]" />
+    <span>
+      Offline classroom training is available for this course in
+      <span className="text-white font-medium"> Mumbai</span>.
+    </span>
+  </div>
+
+  <p className="text-gray-500 max-w-xl mx-auto">
+    Sessions are conducted in small batches with guided labs.
+    For batch availability and schedules,
+    <Link
+      to="/contact"
+      className="ml-1 text-[#00ff9d] hover:underline"
+    >
+      contact us
+    </Link>.
+  </p>
+
+</div>
 
 
-        <div className="h-20"></div>
+        {/* <div className="h-20"></div> */}
       </div>
     
     </div>

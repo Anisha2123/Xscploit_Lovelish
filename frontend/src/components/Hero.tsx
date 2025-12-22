@@ -115,7 +115,7 @@ const Terminal: React.FC<{ lines?: string[] }> = ({
       if (p > 100) {
         clearInterval(id);
       }
-    }, 200);
+    }, 500);
     return () => clearInterval(id);
   }, [index]);
 
@@ -202,7 +202,7 @@ const HeroContent: React.FC = () => {
 // ----------------------- Hero (Main Export) -----------------------
 const Hero: React.FC = () => {
   return (
-    <section className="relative h-screen min-h-[680px] flex items-center justify-center bg-black text-white overflow-hidden">
+    <section className="relative h-screen max-sm:min-h-[920px] md:min-h-[760px] flex items-center justify-center bg-black text-white overflow-hidden">
       {/* Matrix Rain Background */}
       <MatrixRain opacity={0.14} />
 

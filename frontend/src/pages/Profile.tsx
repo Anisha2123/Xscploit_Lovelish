@@ -11,6 +11,37 @@ const Profile: React.FC = () => {
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const location = useLocation();
+type KpiItemProps = {
+  label: string;
+  value: number | string;
+};
+
+const KpiItem = ({ label, value }: KpiItemProps) => {
+  return (
+    <div className="flex flex-col gap-1 items-center">
+      <p className="text-xs uppercase tracking-wider text-gray-500">
+        {label}
+      </p>
+      <p className="text-3xl font-semibold text-white">
+        {value}
+      </p>
+    </div>
+  );
+};
+const StatusBadge = ({ status }: { status: string }) => (
+  <span
+    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium
+      ${
+        status === "paid"
+          ? "bg-emerald-500/10 text-emerald-400"
+          : "bg-red-500/10 text-red-400"
+      }`}
+  >
+    {status === "paid" ? <FaCheckCircle /> : <FaTimesCircle />}
+    {status.toUpperCase()}
+  </span>
+);
+
 
 if (!userId) {
   return (
@@ -66,184 +97,242 @@ if (!userId) {
 <div className="max-w-6xl mx-auto my-14">
   <div className="bg-[#0b0f14] border border-[#00ff9d15] rounded-2xl px-8 py-6 shadow-lg">
 
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+    <div className="flex flex-col gap-6">
 
-      {/* Left: User Info */}
+  {/* TOP ROW — IDENTITY + ACTION */}
+  <div className="flex max-sm:flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+    {/* Identity */}
+    <div className="flex items-center gap-4">
+      {/* Avatar */}
+      <div className="w-12 h-12 rounded-full bg-[#00ff9d]/15 
+                      flex items-center justify-center 
+                      text-[#00ff9d] font-semibold text-lg">
+        {(user?.name || "U").charAt(0).toUpperCase()}
+      </div>
+
       <div>
-        <h1 className="text-2xl font-semibold text-white tracking-tight">
+        <h1 className="text-xl font-semibold text-white leading-tight">
           {user?.name || "User"}
         </h1>
-
-        <p className="text-gray-400 text-sm mt-1">
+        <p className="text-sm text-gray-400">
           {user?.email}
         </p>
-
-        {/* Meta Info */}
-        <div className="flex flex-wrap gap-6 mt-4 text-xs text-gray-500">
-          <div>
-            <p className="uppercase tracking-wider text-[10px] text-gray-600">
-              User ID
-            </p>
-            <p className="text-gray-300 font-medium">
-              {user?.userId}
-            </p>
-          </div>
-
-          <div>
-            <p className="uppercase tracking-wider text-[10px] text-gray-600">
-              Account Created
-            </p>
-            <p className="text-gray-300 font-medium">
-              {user?.createdAt
-                ? new Date(user.createdAt).toLocaleDateString()
-                : "—"}
-            </p>
-          </div>
-
-          <div>
-            <p className="uppercase tracking-wider text-[10px] text-gray-600">
-              Account Status
-            </p>
-            <p className="text-[#00ff9d] font-medium">
-              Active
-            </p>
-          </div>
-        </div>
       </div>
-
-      {/* Right: Actions */}
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => {
-            localStorage.removeItem("userId");
-            window.location.href = "/";
-          }}
-          className="px-6 py-2 rounded-lg bg-[#00ff9d] text-black text-sm font-semibold hover:opacity-90 transition"
-        >
-          Logout
-        </button>
-      </div>
-
     </div>
+
+    {/* Action */}
+    <button
+      onClick={() => {
+        localStorage.removeItem("userId");
+        window.location.href = "/";
+      }}
+      className="self-start sm:self-auto px-5 py-2 rounded-md
+                 border border-white/10 text-sm text-gray-300
+                 hover:bg-[#00ff9d] hover:text-black
+                 transition"
+    >
+      Sign out
+    </button>
+  </div>
+
+  {/* BOTTOM ROW — METADATA */}
+  <div className="grid max-sm:grid-cols-2 sm:grid-cols-4 gap-6 text-xs md:justify-items-center">
+
+    <div>
+      <p className="uppercase tracking-wider text-[10px] text-gray-500">
+        User ID
+      </p>
+      <p className="mt-1 text-gray-300 font-medium">
+        {user?.userId || "—"}
+      </p>
+    </div>
+
+    <div>
+      <p className="uppercase tracking-wider text-[10px] text-gray-500">
+        Created
+      </p>
+      <p className="mt-1 text-gray-300 font-medium">
+        {user?.createdAt
+          ? new Date(user.createdAt).toLocaleDateString()
+          : "—"}
+      </p>
+    </div>
+
+    <div>
+      <p className="uppercase tracking-wider text-[10px] text-gray-500">
+        Status
+      </p>
+      <div className="mt-1 flex items-center gap-2">
+        <span className="h-2 w-2 rounded-full bg-[#00ff9d]" />
+        <span className="text-[#00ff9d] font-medium">
+          Active
+        </span>
+      </div>
+    </div>
+
+    <div>
+      <p className="uppercase tracking-wider text-[10px] text-gray-500">
+        Role
+      </p>
+      <p className="mt-1 text-gray-300 font-medium">
+        Learner
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
   </div>
 </div>
 
 
-{/* Stats Overview */}
-<div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
-  <StatCard title="Courses Purchased" value={courses.length} />
-  <StatCard
-    title="Modules Unlocked"
-    value={courses.reduce((acc, c) => acc + c.modulesUnlocked.length, 0)}
-  />
-  <StatCard title="Payments Made" value={payments.length} />
-  <StatCard
-    title="Full Courses"
-    value={courses.filter(c => c.fullCoursePurchased).length}
-  />
+<div className="max-w-6xl mx-auto mb-14">
+  <div className="grid max-sm:grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-8 md:justify-items-center">
+
+    <KpiItem
+      label="Courses Purchased"
+      value={courses.length}
+    />
+
+    <KpiItem
+      label="Modules Unlocked"
+      value={courses.reduce(
+        (acc, c) => acc + c.modulesUnlocked.length,
+        0
+      )}
+    />
+
+    <KpiItem
+      label="Payments Made"
+      value={payments.length}
+    />
+
+    <KpiItem
+      label="Full Courses"
+      value={courses.filter(c => c.fullCoursePurchased).length}
+    />
+
+  </div>
 </div>
+
 
 
 
       {/* Courses Purchased / Order History */}
       <SectionHeading title="Courses Purchased" />
-      <div className="max-w-6xl mx-auto overflow-x-auto mb-12">
-        <table className="w-full text-left text-gray-300 border border-[#00ff9d20] rounded-lg">
-          <thead className="bg-[#0c1015] text-[#00ff9d]">
-            <tr>
-              <th className="px-4 py-2">Course ID</th>
-              <th className="px-4 py-2">Modules Unlocked</th>
-              <th className="px-4 py-2">Full Course</th>
-              <th className="px-4 py-2">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {courses.map(c => (
-              <tr key={c._id} className="border-t border-[#00ff9d10]">
-                <td className="px-4 py-2">{c.courseId}</td>
-                <td className="px-4 py-2">{c.modulesUnlocked.length}</td>
-                <td className="px-4 py-2">{c.fullCoursePurchased ? "✔" : "✖"}</td>
-                <td className="px-4 py-2">
-                  {c.status === "paid" ? <FaCheckCircle className="text-[#00ff9d]" /> : <FaTimesCircle className="text-red-500" />}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+
+<div className="max-w-6xl mx-auto mb-14">
+  <div className="relative overflow-x-auto rounded-xl border border-white/10">
+    <table className="w-full text-sm text-left text-gray-300">
+      <thead className="sticky top-0 bg-[#0c1015] text-gray-400 uppercase text-xs tracking-wider">
+        <tr>
+          <th className="px-6 py-4">Course ID</th>
+          <th className="px-6 py-4 text-center">Modules</th>
+          <th className="px-6 py-4 text-center">Full Access</th>
+          <th className="px-6 py-4">Status</th>
+        </tr>
+      </thead>
+
+      <tbody className="divide-y divide-white/5">
+        {courses.map(c => (
+          <tr
+            key={c._id}
+            className="hover:bg-white/5 transition-colors"
+          >
+            <td className="px-6 py-4 font-medium text-white">
+              {c.courseId}
+            </td>
+
+            <td className="px-6 py-4 text-center">
+              {c.modulesUnlocked.length}
+            </td>
+
+            <td className="px-6 py-4 text-center">
+              {c.fullCoursePurchased ? "Yes" : "No"}
+            </td>
+
+            <td className="px-6 py-4">
+              <StatusBadge status={c.status} />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
 
       {/* Payment History */}
       <SectionHeading title="Payment History" />
-      <div className="max-w-6xl mx-auto overflow-x-auto mb-12">
-        <table className="w-full text-left text-gray-300 border border-[#00ff9d20] rounded-lg">
-          <thead className="bg-[#0c1015] text-[#00ff9d]">
-            <tr>
-              <th className="px-4 py-2">Payment ID</th>
-              <th className="px-4 py-2">Course</th>
-              <th className="px-4 py-2">Modules Paid</th>
-              <th className="px-4 py-2">Status</th>
-              <th className="px-4 py-2">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {payments.map(p => (
-  <tr key={p._id} className="border-t border-[#00ff9d10] hover:bg-[#00ff9d05] transition">
-    
-    {/* Payment ID */}
-    <td className="px-4 py-3 text-sm text-gray-300">
-      {p.paymentId}
-    </td>
 
-    {/* Course */}
-    <td className="px-4 py-3 text-sm text-gray-300">
-      {p.courseSlug.toUpperCase()}
-    </td>
+<div className="max-w-6xl mx-auto mb-14">
+  <div className="relative overflow-x-auto rounded-xl border border-white/10">
+    <table className="w-full text-sm text-left text-gray-300">
+      <thead className="sticky top-0 bg-[#0c1015] text-gray-400 uppercase text-xs tracking-wider">
+        <tr>
+          <th className="px-6 py-4">Payment ID</th>
+          <th className="px-6 py-4">Course</th>
+          <th className="px-6 py-4">Modules</th>
+          <th className="px-6 py-4">Status</th>
+          <th className="px-6 py-4">Date</th>
+        </tr>
+      </thead>
 
-    {/* Modules */}
-    <td className="px-4 py-3 text-sm">
-      {Array.isArray(p.moduleIndex) && p.moduleIndex.length > 0 ? (
-        <div className="flex flex-wrap gap-2">
-          {p.moduleIndex.map((m: number) => (
-            <span
-              key={m}
-              className="px-2 py-0.5 rounded-md bg-[#00ff9d15] text-[#00ff9d] text-xs font-medium"
-            >
-              Module {m + 1}
-            </span>
-          ))}
-        </div>
-      ) : (
-        <span className="px-2 py-0.5 rounded-md bg-[#00ff9d15] text-[#00ff9d] text-xs font-medium">
-          Full Course
-        </span>
-      )}
-    </td>
+      <tbody className="divide-y divide-white/5">
+        {payments.map(p => (
+          <tr
+            key={p._id}
+            className="hover:bg-white/5 transition-colors"
+          >
+            <td className="px-6 py-4 text-gray-400">
+              {p.paymentId}
+            </td>
 
-    {/* Status */}
-    <td className="px-4 py-3">
-      {p.status === "paid" ? (
-        <FaCheckCircle className="text-[#00ff9d]" />
-      ) : (
-        <FaTimesCircle className="text-red-500" />
-      )}
-    </td>
+            <td className="px-6 py-4 font-medium text-white">
+              {p.courseSlug.toUpperCase()}
+            </td>
 
-    {/* Timestamp */}
-    <td className="px-4 py-3 text-sm text-gray-400">
-      {p.timestamp
-        ? new Date(p.timestamp).toLocaleString("en-IN", {
-            dateStyle: "medium",
-            timeStyle: "short",
-          })
-        : "—"}
-    </td>
+            <td className="px-6 py-4">
+              {Array.isArray(p.moduleIndex) && p.moduleIndex.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {p.moduleIndex.map((m: number) => (
+                    <span
+                      key={m}
+                      className="px-2 py-1 rounded-md bg-white/5 text-xs"
+                    >
+                      Module {m + 1}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <span className="px-2 py-1 rounded-md bg-white/5 text-xs">
+                  Full Course
+                </span>
+              )}
+            </td>
 
-  </tr>
-))}
+            <td className="px-6 py-4">
+              <StatusBadge status={p.status} />
+            </td>
 
-          </tbody>
-        </table>
-      </div>
+            <td className="px-6 py-4 text-gray-400">
+              {p.timestamp
+                ? new Date(p.timestamp).toLocaleString("en-IN", {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })
+                : "—"}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
     </div>
   );
 };
@@ -258,6 +347,13 @@ const StatCard = ({ title, value }: any) => (
   </div>
 );
 
-const SectionHeading = ({ title }: any) => (
-  <h2 className="text-2xl font-bold text-[#00ff9d] mb-4 mt-12 drop-shadow-[0_0_10px_#00ff9d80]">{title}</h2>
+const SectionHeading = ({ title }: { title: string }) => (
+  <div className="mb-6 mt-12 flex items-center gap-3">
+    <div className="h-4 w-1 rounded bg-emerald-400/80" />
+    <h2 className="text-lg font-semibold text-white">
+      {title}
+    </h2>
+  </div>
 );
+
+

@@ -68,7 +68,7 @@ window.addEventListener("resize", resizeCanvas);
       className="absolute inset-0 opacity-20 pointer-events-none"
     />
 
-    <div className="relative z-10 max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-1 gap-20 items-start">
+    <div className="relative z-10 max-w-6xl mx-auto px-6 grid sm:grid-cols-1 md:grid-cols-2 gap-20 items-start">
       
       {/* LEFT CONTENT */}
       <motion.div

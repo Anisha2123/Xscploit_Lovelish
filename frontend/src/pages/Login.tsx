@@ -46,7 +46,7 @@ const from = location.state?.from || "/Xsploit";
 
     setTimeout(() => {
       navigate(from, { replace: true });
-    }, 500);
+    }, 1000);
 
   } catch (e: any) {
     const error = e.response?.data?.error || "Something went wrong.";

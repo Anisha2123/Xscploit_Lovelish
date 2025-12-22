@@ -19,7 +19,22 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true
-    }
+    },
+    authProvider: {
+    type: String,
+    enum: ["email", "google", "github"],
+    default: "email",
+  },
+
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
+  },
+
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  }
   },
   { timestamps: true }
 );

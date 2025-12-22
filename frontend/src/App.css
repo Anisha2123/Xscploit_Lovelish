@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+button,a{
+  cursor: pointer;
+}
+
+
 /* Courses */
 .cards {
   width: 100%;

@@ -25,7 +25,7 @@ const WhyXsploit = () => {
       {/* ambient glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_left,rgba(0,255,157,0.08),transparent_55%)] pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-start">
+      <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
         
         {/* LEFT — authority block */}
         <motion.div
@@ -34,7 +34,7 @@ const WhyXsploit = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-xs tracking-widest uppercase text-[#7ff7c9]">
+          <span className="text-xs tracking-widest uppercase text-[#7ff7c9] ">
             Why Xsploit
           </span>
 

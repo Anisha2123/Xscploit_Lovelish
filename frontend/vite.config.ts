@@ -7,6 +7,9 @@ export default defineConfig({
   ],
   build: {
     emptyOutDir: true
-  }
+  },
+  esbuild: {
+    drop: ["console", "debugger"],
+  },
 
 })

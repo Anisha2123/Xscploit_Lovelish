@@ -12,7 +12,8 @@ import LearningPath from "../components/LearningPath";
 import WhyXsploit from "../components/WhyXsploit";
 import Testimonials from "../components/Testimonials";
 import CTA from "../components/CTA";
-// import './App.css'
+import Contact from "./Contact";
+// import '../App.css'
 
 const Xsploit = () => {
 
