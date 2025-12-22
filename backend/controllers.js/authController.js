@@ -105,43 +105,15 @@ const signup = async (req, res) => {
     const { name, email, password } = req.body;
      console.log(`sign rout hit `);
      console.log(req.body);
-    // 1. Validate missing fields
-    if (!name || !email || !password) {
-      return res.status(400).json({ error: "MISSING_FIELDS" });
-    }
 
-    // 2. Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({ error: "INVALID_EMAIL_FORMAT" });
-    }
-
-
-    // 3. Validate password strength
-    // At least 8 chars, 1 letter, 1 number
-    const signup = async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-     console.log(`sign rout hit `);
-     console.log(req.body);
-    // 1. Validate missing fields
-    if (!name || !email || !password) {
-      return res.status(400).json({ error: "MISSING_FIELDS" });
-    }
-
-    // 2. Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({ error: "INVALID_EMAIL_FORMAT" });
-    }
-
-
+     
     // 3. Validate password strength
     // At least 8 chars, 1 letter, 1 number
     const passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if (!passRegex.test(password)) {
       return res.status(400).json({ error: "WEAK_PASSWORD" });
     }
+   
 
     // 4. Check if user already exists
     const exist = await User.findOne({ email });
@@ -176,42 +148,43 @@ const signup = async (req, res) => {
     console.error("Signup Error:", err);
     res.status(500).json({ error: "SERVER_ERROR" });
   }
-};
+}
+const resetPassword = async (req, res) => {
+  try {
+    console.log("reset password api hit");
+    const { email, password } = req.body;
 
-    // 4. Check if user already exists
-    const exist = await User.findOne({ email });
-    if (exist) {
-      return res.status(409).json({ error: "USER_EXISTS" });
+    if (!email || !password) {
+      return res.status(400).json({ error: "MISSING_FIELDS" });
     }
 
-    // 5. Hash password
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "USER_DOES_NOT_EXIST" });
+    }
+
     const hashedPassword = await hash(password, 10);
 
-    // 6. Auto-generate unique userId (like professional SaaS platforms)
-    const userId = "USR-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+    await User.findOneAndUpdate(
+      { email },                       // ✅ FILTER
+      { password: hashedPassword },    // ✅ UPDATE
+      { new: true }
+    );
+    const updatedUser = await User.findOne({ email });
+console.log(updatedUser.password);
 
-    // 7. Create user
-    const newUser = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      userId,
-      isEmailVerified: true,
-      authProvider: "email",
-    });
 
-    // 8. Respond
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
-      message: "Account created successfully",
-      userId: newUser.userId,
+      message: "Password changed successfully",
     });
 
   } catch (err) {
-    console.error("Signup Error:", err);
+    console.error("Reset Error:", err);
     res.status(500).json({ error: "SERVER_ERROR" });
   }
 };
+
 
 
 const login = async (req, res) => {
@@ -258,4 +231,6 @@ const login = async (req, res) => {
 };
 
 
-export default { signup, login, sendOtp };
+
+
+export default { signup, login, sendOtp, resetPassword };

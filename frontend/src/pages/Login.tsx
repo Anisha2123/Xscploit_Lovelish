@@ -93,7 +93,12 @@ const from = location.state?.from || "/Xsploit";
 
         <AuthInput label="Email" value={email} setValue={setEmail} />
         <AuthInput label="Password" type="password" value={password} setValue={setPassword} />
-
+          <Link
+    to="/forgot-password"
+    className="text-sm text-gray-400 hover:text-[#00ff9d] transition"
+  >
+    Forgot password?
+  </Link>
         {msg && <p className="text-center text-sm text-[#ff4f4f] font-mono mt-2">{msg}</p>}
 
         <button

@@ -12,6 +12,7 @@ import Footer from './components/footer';
 import Profile from './pages/Profile';
 import Contact from './pages/Contact';
 import Course from './pages/CoursesPage';
+import ForgotPassword from './pages/ForgotPassword';
 function App() {
 
   return (
@@ -28,6 +29,7 @@ function App() {
     <Route path="/profile/:userId" element={<Profile/>} />
     <Route path="/contact" element={<Contact/>} />
     <Route path="/courses" element={<Course/>} />
+    <Route path="/forgot-password" element={<ForgotPassword/>} />
     </Routes>
     <Footer />
    {/* <Signup/> */}

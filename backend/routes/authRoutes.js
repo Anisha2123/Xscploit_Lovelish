@@ -4,7 +4,7 @@ import { Router } from "express";
 // const { signup, login } = require("../controllers/authController.js");
 import authController from "../controllers.js/authController.js";
 import Otp from "../models/Otp.js";
-const { signup, login, sendOtp} = authController ;
+const { signup, login, sendOtp, resetPassword} = authController ;
 // import 
 // import { sendOtpEmail } from "../utils/brevoMailer.js";
 const router = Router();
@@ -12,6 +12,10 @@ const router = Router();
 router.post("/signup", signup);
 router.post("/login", login);
 router.post("/send-otp", sendOtp)
+router.post("/reset-password",resetPassword);
+// router.post("/forgot-password/send-otp", sendForgotOtp);
+// router.post("/forgot-password/verify-otp", verifyForgotOtp);
+// router.post("/forgot-password/reset", resetPassword);
 
 // SEND OTP
 // router.post("/send-otp", async (req, res) => {
@@ -89,6 +93,7 @@ router.post("/verify-otp", async (req, res) => {
     return res.status(500).json({ error: "VERIFY_OTP_FAILED" });
   }
 });
+
 
 
 

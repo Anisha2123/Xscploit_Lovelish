@@ -1,92 +1,33 @@
-import React, { useState, useEffect } from "react";
-import AuthInput from "../components/AuthInput";
+import { useState, useEffect } from "react";
 import { API } from "../utils/api";
 import { motion } from "framer-motion";
+import AuthInput from "../components/AuthInput";
 import { Link } from "react-router-dom";
 
 type Step = "FORM" | "OTP" | "SUCCESS";
 
-const Signup = () => {
-  const [name, setName] = useState("");
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("");
-const [otp, setOtp] = useState("");
-const [timer, setTimer] = useState(60); // seconds
-const [msg, setMsg] = useState("");
+const ForgotPassword = () => {
 const [step, setStep] = useState<Step>("FORM");
-const [loading, setLoading] = useState(false);
-
-/* OTP META */
-const [resendTimer, setResendTimer] = useState(0);
-const [canResend, setCanResend] = useState(false);
-const [attemptsLeft, setAttemptsLeft] = useState<number | null>(null);
-
-/* LOCK */
-const [isLocked, setIsLocked] = useState(false);
-const [lockTimer, setLockTimer] = useState(0);
-
-/* PASSWORD */
-const [passwordRules, setPasswordRules] = useState<any>(null);
-
-
-
-
-useEffect(() => {
-  if (step !== "OTP") return;
-
-  setTimer(30);
-  setCanResend(false);
-
-  const interval = setInterval(() => {
-    setTimer((prev) => {
-      if (prev <= 1) {
-        clearInterval(interval);
-        setCanResend(true);
-        return 0;
-      }
-      return prev - 1;
-    });
-  }, 1000);
-
-  return () => clearInterval(interval);
-}, [step]);
-useEffect(() => {
-  if (password) {
-    setPasswordRules(validatePassword(password));
-  } else {
-    setPasswordRules(null);
-  }
-}, [password]);
-
-useEffect(() => {
-  if (resendTimer <= 0) {
-    setCanResend(true);
-    return;
-  }
-
-  const interval = setInterval(() => {
-    setResendTimer(prev => prev - 1);
-  }, 1000);
-
-  return () => clearInterval(interval);
-}, [resendTimer]);
-
-const validateName = (name: string) => {
-  const trimmed = name.trim();
-
-  if (trimmed.length < 2) {
-    return "Name must be at least 2 characters long";
-  }
-
-  if (!/^[A-Za-z ]+$/.test(trimmed)) {
-    return "Name should contain only letters";
-  }
-
-  return null;
-};
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("");
+  const [timer, setTimer] = useState(60); // seconds
+  /* LOCK */
+  const [isLocked, setIsLocked] = useState(false);
+  const [lockTimer, setLockTimer] = useState(0);
+  
+  /* PASSWORD */
+  const [passwordRules, setPasswordRules] = useState<any>(null);
+  
+  /* OTP META */
+  const [resendTimer, setResendTimer] = useState(0);
+  const [canResend, setCanResend] = useState(false);
+  const [attemptsLeft, setAttemptsLeft] = useState<number | null>(null);
 
 
-  /* STEP 1: SEND OTP */
+ /* STEP 1: SEND OTP */
   const sendOtp = async () => {
     const { isValid } = validatePassword(password);
 
@@ -94,12 +35,8 @@ const validateName = (name: string) => {
     setMsg("Password does not meet security requirements.");
     return;
   }
-      if (!email) return setMsg("Email is required");
-  if (!name) return setMsg("Name is required");
+  if (!email) return setMsg("Email is required");
 
-
-  const nameError = validateName(name);
-  if (nameError) return setMsg(nameError);
 
     try {
       setLoading(true);
@@ -124,10 +61,10 @@ const validateName = (name: string) => {
       setIsLocked(true);
       setLockTimer(data.retryAfter);
       setStep("OTP")
-      // setMsg(
-      //   `Too many attempts. Try again in ${data.retryAfter}s.`
-      // );
-      setMsg("");
+      setMsg(
+        `Too1 many attempts. Try again in ${data.retryAfter}s.`
+      );
+      // setMsg("");
       break;
 
     case "RESEND_TOO_SOON":
@@ -161,7 +98,7 @@ const validateName = (name: string) => {
       setMsg("");
 
       await API.post("/auth/verify-otp", { email, otp });
-      await API.post("/auth/signup", { name, email, password });
+      await API.post("/auth/reset-password", { email, password });
 
       setStep("SUCCESS");
 
@@ -179,8 +116,8 @@ const validateName = (name: string) => {
           setMsg("Invalid or expired OTP.");
           setAttemptsLeft(data?.attemptsLeft ?? null);
           break;
-        case "USER_EXISTS":
-          setMsg("Account already exists.");
+        case "USER_DOES_NOT_EXIST":
+          setMsg("No account found! Please Register")
           break;
           case "OTP_EXPIRED":
   setMsg("OTP expired. Please request a new one.");
@@ -192,8 +129,8 @@ case "OTP_LOCKED":
       setLockTimer(data?.retryAfter);
       setAttemptsLeft(0);
       setStep("OTP");
-      setMsg("");
-      // setMsg("Too many attempts.");
+      // setMsg("");
+      setMsg("Too many attempts.");
       break;
 
 case "OTP_NOT_FOUND":
@@ -207,7 +144,55 @@ case "OTP_NOT_FOUND":
       setLoading(false);
     }
   };
- useEffect(() => {
+  const resendOtp = async () => {
+    try {
+      setMsg("");
+      setLoading(true);
+  
+      await API.post("/auth/send-otp", { email });
+  
+      setResendTimer(60);
+      setCanResend(false);
+      setMsg("New OTP sent to your email.");
+  
+    } catch (err: any) {
+      const data = err.response?.data?.error;
+  
+      if (err === "RESEND_TOO_SOON") {
+  setResendTimer(data.retryAfter);
+  setCanResend(false);
+} else if (err === "OTP_LOCKED") {
+  setIsLocked(true);
+  setLockTimer(data.retryAfter);
+} else {
+  setMsg("Failed to resend OTP.");
+}
+  
+    } finally {
+      setLoading(false);
+    }
+  };
+ 
+  useEffect(() => {
+    if (password) {
+      setPasswordRules(validatePassword(password));
+    } else {
+      setPasswordRules(null);
+    }
+  }, [password]);
+  useEffect(() => {
+  if (resendTimer <= 0) {
+    setCanResend(true);
+    return;
+  }
+
+  const interval = setInterval(() => {
+    setResendTimer(prev => prev - 1);
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [resendTimer]);
+useEffect(() => {
   if (!isLocked || lockTimer <= 0) return;
 
   const interval = setInterval(() => {
@@ -224,38 +209,7 @@ case "OTP_NOT_FOUND":
 }, [isLocked, lockTimer]);
 
 
-  const resendOtp = async () => {
-  try {
-    setMsg("");
-    setLoading(true);
-
-    await API.post("/auth/send-otp", { email });
-
-    setResendTimer(60);
-    setCanResend(false);
-    setMsg("New OTP sent to your email.");
-
-  } catch (err: any) {
-    const data = err.response?.data?.error;
-
-    if (err === "RESEND_TOO_SOON") {
-      setTimer(err.response.data.retryAfter);
-      setCanResend(false);
-      setMsg("Please wait before resending OTP.");
-    } else if (err === "OTP_LOCKED") {
-      setIsLocked(true);
-  setLockTimer(err.retryAfter); // seconds
-      setMsg(`Locked for ${data.retryAfter}s.`);
-    } else {
-      setMsg("Failed to resend OTP.");
-    }
-
-  } finally {
-    setLoading(false);
-  }
-};
-
-const validatePassword = (password: string) => {
+  const validatePassword = (password: string) => {
   const rules = {
     length: password.length >= 8,
     upper: /[A-Z]/.test(password),
@@ -268,7 +222,6 @@ const validatePassword = (password: string) => {
 
   return { isValid, rules };
 };
-
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#080b0e] px-4">
@@ -289,17 +242,13 @@ const validatePassword = (password: string) => {
     {/* HEADER */}
     <div className="text-center space-y-2">
       <h2 className="text-2xl sm:text-3xl font-semibold text-[#00ff9d] tracking-wide">
-        Create Account
+        Reset your password
       </h2>
-      <p className="text-sm text-gray-400">
-        Secure signup with email verification
-      </p>
     </div>
 
     {/* ================= FORM STEP ================= */}
     {step === "FORM" && (
       <div className="space-y-4">
-        <AuthInput label="Full Name" value={name} setValue={setName} />
         <AuthInput label="Email Address" value={email} setValue={setEmail} />
         <AuthInput
           label="Password"
@@ -373,7 +322,7 @@ const validatePassword = (password: string) => {
         disabled:opacity-50 disabled:cursor-not-allowed
       "
     >
-      {loading ? "Verifying…" : "Create Account"}
+      {loading ? "Verifying…" : "Reset Password"}
     </button>
 
     {/* OTP META INFO */}
@@ -393,7 +342,7 @@ const validatePassword = (password: string) => {
       {!isLocked && (
         canResend ? (
           <button
-            onClick={resendOtp}
+            onClick={resendOtp} disabled={isLocked}
             className="text-[#00ff9d] hover:underline"
           >
             Resend OTP
@@ -424,7 +373,7 @@ const validatePassword = (password: string) => {
     {step === "SUCCESS" && (
       <div className="text-center space-y-2">
         <p className="text-green-400 font-medium text-lg">
-          Account created successfully
+          Password Changed successfully
         </p>
         <p className="text-sm text-gray-400">
           You can now log in securely
@@ -453,8 +402,7 @@ const validatePassword = (password: string) => {
     )}
   </motion.div>
 </div>
-
   );
 };
 
-export default Signup;
+export default ForgotPassword;
