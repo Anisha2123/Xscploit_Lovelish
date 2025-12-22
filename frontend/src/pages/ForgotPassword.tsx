@@ -36,8 +36,12 @@ const [step, setStep] = useState<Step>("FORM");
     return;
   }
   if (!email) return setMsg("Email is required");
-
-
+   
+  if (isLocked && lockTimer > 0) {
+    console.log(`running send otp `)
+  setMsg(`Please wait ${lockTimer}s before retrying.`);
+  return;
+}
     try {
       setLoading(true);
       setMsg("");
@@ -60,11 +64,11 @@ const [step, setStep] = useState<Step>("FORM");
     case "OTP_LOCKED":
       setIsLocked(true);
       setLockTimer(data.retryAfter);
+      setCanResend(false);
       setStep("OTP")
-      setMsg(
-        `Too1 many attempts. Try again in ${data.retryAfter}s.`
-      );
+      setMsg(`Too1 many attempts. Try again in ${data.retryAfter}s.`);
       // setMsg("");
+      return ;
       break;
 
     case "RESEND_TOO_SOON":
