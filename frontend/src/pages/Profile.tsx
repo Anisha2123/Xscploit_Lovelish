@@ -15,7 +15,7 @@ type KpiItemProps = {
   label: string;
   value: number | string;
 };
-
+console.log(`userid is ${userId}`)
 const KpiItem = ({ label, value }: KpiItemProps) => {
   return (
     <div className="flex flex-col gap-1 items-center">
@@ -56,7 +56,7 @@ if (!userId) {
 
       <button
         onClick={() =>
-          navigate("/", {
+          navigate("/login", {
             state: { from: location.pathname }
           })
         }
@@ -125,7 +125,7 @@ if (!userId) {
     <button
       onClick={() => {
         localStorage.removeItem("userId");
-        window.location.href = "/";
+        window.location.href = "/login";
       }}
       className="self-start sm:self-auto px-5 py-2 rounded-md
                  border border-white/10 text-sm text-gray-300
@@ -227,14 +227,15 @@ if (!userId) {
 <div className="max-w-6xl mx-auto mb-14">
   <div className="relative overflow-x-auto rounded-xl border border-white/10">
     <table className="w-full text-sm text-left text-gray-300">
-      <thead className="sticky top-0 bg-[#0c1015] text-gray-400 uppercase text-xs tracking-wider">
-        <tr>
-          <th className="px-6 py-4">Course ID</th>
-          <th className="px-6 py-4 text-center">Modules</th>
-          <th className="px-6 py-4 text-center">Full Access</th>
-          <th className="px-6 py-4">Status</th>
-        </tr>
-      </thead>
+     <thead className="sticky top-0 bg-[#0c1015] text-gray-400 uppercase text-xs tracking-wider">
+  <tr>
+    <th className="px-6 py-4 whitespace-nowrap">Course ID</th>
+    <th className="px-6 py-4 text-center whitespace-nowrap">Modules</th>
+    <th className="px-6 py-4 text-center whitespace-nowrap">Full Access</th>
+    <th className="px-6 py-4 whitespace-nowrap">Status</th>
+  </tr>
+</thead>
+
 
       <tbody className="divide-y divide-white/5">
         {courses.map(c => (
@@ -242,9 +243,13 @@ if (!userId) {
             key={c._id}
             className="hover:bg-white/5 transition-colors"
           >
+    
             <td className="px-6 py-4 font-medium text-white">
-              {c.courseId}
-            </td>
+  <span className="block whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px] sm:max-w-none">
+     {c.courseId}
+  </span>
+</td>
+
 
             <td className="px-6 py-4 text-center">
               {c.modulesUnlocked.length}
@@ -292,40 +297,70 @@ if (!userId) {
             </td>
 
             <td className="px-6 py-4 font-medium text-white">
-              {p.courseSlug.toUpperCase()}
-            </td>
+  <span className="block whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px] sm:max-w-none">
+    {p.courseSlug.toUpperCase()}
+  </span>
+</td>
 
-            <td className="px-6 py-4">
-              {Array.isArray(p.moduleIndex) && p.moduleIndex.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {p.moduleIndex.map((m: number) => (
-                    <span
-                      key={m}
-                      className="px-2 py-1 rounded-md bg-white/5 text-xs"
-                    >
-                      Module {m + 1}
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                <span className="px-2 py-1 rounded-md bg-white/5 text-xs">
-                  Full Course
-                </span>
-              )}
-            </td>
+
+            <td className="px-4 sm:px-6 py-4 max-w-[220px] sm:max-w-none">
+  {Array.isArray(p.moduleIndex) && p.moduleIndex.length > 0 ? (
+    <div
+      className="
+        flex gap-2
+        overflow-x-auto sm:overflow-visible
+        whitespace-nowrap
+        scrollbar-thin scrollbar-thumb-white/10
+      "
+    >
+      {p.moduleIndex.map((m: number) => (
+        <span
+          key={m}
+          className="
+            shrink-0
+            px-2 py-1
+            rounded-md
+            bg-white/5
+            text-[11px] sm:text-xs
+            text-gray-300
+          "
+        >
+          Module {m + 1}
+        </span>
+      ))}
+    </div>
+  ) : (
+    <span className="px-2 py-1 rounded-md bg-white/5 text-[11px] sm:text-xs text-gray-300">
+      Full Course
+    </span>
+  )}
+</td>
+
 
             <td className="px-6 py-4">
               <StatusBadge status={p.status} />
             </td>
 
-            <td className="px-6 py-4 text-gray-400">
-              {p.timestamp
-                ? new Date(p.timestamp).toLocaleString("en-IN", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  })
-                : "—"}
-            </td>
+           <td className="px-6 py-4 text-gray-400">
+  {p.timestamp ? (
+    <div className="flex flex-col sm:block text-xs sm:text-sm">
+      <span className="whitespace-nowrap">
+        {new Date(p.timestamp).toLocaleDateString("en-IN", {
+          dateStyle: "medium",
+        })}
+      </span>
+      <span className="whitespace-nowrap text-gray-500 sm:ml-1 sm:inline">
+        {new Date(p.timestamp).toLocaleTimeString("en-IN", {
+          timeStyle: "short",
+        })}
+      </span>
+    </div>
+  ) : (
+    "—"
+  )}
+</td>
+
+
           </tr>
         ))}
       </tbody>

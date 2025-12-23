@@ -6,7 +6,7 @@ import Lab from "../components/Lab";
 import AboutUs from "../components/AboutUs";
 import Pricing from "../components/Pricing";
 import Navbar from "../components/Navbar";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import TrustBar from "../components/TrustBar";
 import LearningPath from "../components/LearningPath";
 import WhyXsploit from "../components/WhyXsploit";

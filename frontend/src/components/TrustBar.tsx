@@ -56,7 +56,7 @@ const TrustBar = () => {
       <div className="relative max-w-6xl mx-auto px-6">
         {/* stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-          <Stat value={10000} label="Students Trained" Icon={Users} />
+          <Stat value={250} label="Students Trained" Icon={Users} />
           <Stat value={120} label="Security Modules" Icon={Award} />
           <Stat value={50} label="Live Labs" Icon={Terminal} />
           <Stat value={95} label="Success Rate" Icon={ShieldCheck} />

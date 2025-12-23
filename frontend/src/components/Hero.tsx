@@ -107,34 +107,47 @@ const Terminal: React.FC<{ lines?: string[] }> = ({
   }, [lines.length]);
 
   useEffect(() => {
-    let p = 0;
     setProgress(0);
+    let p = 0;
     const id = setInterval(() => {
       p += Math.floor(Math.random() * 8);
       setProgress((prev) => Math.min(100, prev + Math.floor(Math.random() * 12)));
-      if (p > 100) {
-        clearInterval(id);
-      }
+      if (p > 100) clearInterval(id);
     }, 500);
     return () => clearInterval(id);
   }, [index]);
 
   return (
-    <div className="mt-6 w-full bg-black/40 border border-[#00ff9d33] rounded-md p-3 text-left text-sm text-[#a9f7d1] font-mono">
-      <div className="flex items-center gap-3">
-        <span className="w-2 h-2 rounded-full bg-[#00ff9d] shadow-[0_0_8px_#00ff9d]" />
-        <span className="text-[#9ef0c7]">training@xsploit:~$</span>
-        <span className="ml-2 text-[#dfffe8]">{lines[index]}</span>
+    <div className="mt-6 w-full bg-black/40 border border-[#00ff9d33] rounded-md p-3 text-left font-mono">
+      
+      {/* Terminal line */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0">
+        <span className="flex items-center gap-2 shrink-0">
+          <span className="w-2 h-2 rounded-full bg-[#00ff9d] shadow-[0_0_8px_#00ff9d]" />
+          <span className="text-[#9ef0c7] text-xs sm:text-sm">
+            training@xsploit:~$
+          </span>
+        </span>
+
+        <span className="text-[#dfffe8] text-xs sm:text-sm break-words leading-relaxed">
+          {lines[index]}
+        </span>
       </div>
-      <div className="mt-2 w-full bg-[#052016] rounded-full h-2 overflow-hidden">
+
+      {/* Progress bar */}
+      <div className="mt-3 w-full bg-[#052016] rounded-full h-2 overflow-hidden">
         <div
           className="h-full bg-gradient-to-r from-[#00ff9d] to-[#00ffb0]"
-          style={{ width: `${progress}%`, transition: "width 300ms linear" }}
+          style={{
+            width: `${progress}%`,
+            transition: "width 300ms linear",
+          }}
         />
       </div>
     </div>
   );
 };
+
 
 // ----------------------- HeroContent -----------------------
 const HeroContent: React.FC = () => {
@@ -202,7 +215,7 @@ const HeroContent: React.FC = () => {
 // ----------------------- Hero (Main Export) -----------------------
 const Hero: React.FC = () => {
   return (
-    <section className="relative h-screen max-sm:min-h-[920px] md:min-h-[760px] flex items-center justify-center bg-black text-white overflow-hidden">
+    <section className="relative h-screen max-sm:min-h-[1000px] md:min-h-[800px] flex items-center justify-center bg-black text-white overflow-hidden">
       {/* Matrix Rain Background */}
       <MatrixRain opacity={0.14} />
 

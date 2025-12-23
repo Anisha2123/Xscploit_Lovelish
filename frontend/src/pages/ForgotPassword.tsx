@@ -108,7 +108,7 @@ const [step, setStep] = useState<Step>("FORM");
 
       // 4. Redirect after short delay
     setTimeout(() => {
-      window.location.href = "/"; // login route
+      window.location.href = "/login"; // login route
     }, 1000);
      
     } catch (e: any) {
@@ -398,7 +398,7 @@ useEffect(() => {
       <p className="text-center text-sm text-gray-400">
         Already have an account?{" "}
         <Link
-          to="/"
+          to="/login"
           className="text-[#00ff9d] hover:underline font-medium"
         >
           Login

@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
             QUICK LINKS
           </h4>
           <ul className="space-y-2 text-sm grid max-sm:grid-cols-4">
-            <li><a href="/Xsploit" className="hover:text-white">Home</a></li>
+            <li><a href="/" className="hover:text-white">Home</a></li>
             <li><a href="/courses" className="hover:text-white">Courses</a></li>
             <li><a href="/contact" className="hover:text-white">Contact</a></li>
             <li><a href="/profile" className="hover:text-white">Profile</a></li>
@@ -97,7 +97,7 @@ const Footer: React.FC = () => {
 
           {/* Socials */}
           <div className="flex gap-4 mt-6 text-lg">
-            <a href="#" className="hover:text-white"><FaLinkedin /></a>
+            <a href="https://www.linkedin.com/in/lovelish-nirmal-516a383a0/" className="hover:text-white"><FaLinkedin /></a>
             <a href="#" className="hover:text-white"><FaInstagram /></a>
           </div>
         </div>

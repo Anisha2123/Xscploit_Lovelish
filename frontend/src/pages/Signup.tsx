@@ -94,6 +94,11 @@ const validateName = (name: string) => {
     setMsg("Password does not meet security requirements.");
     return;
   }
+  if(!name)
+  {
+    setMsg("Name is required")
+    return ;
+  }
   if (!email) return setMsg("Email is required");
    
   if (isLocked && lockTimer > 0) {
@@ -230,7 +235,7 @@ const validateName = (name: string) => {
 
       // 4. Redirect after short delay
     setTimeout(() => {
-      window.location.href = "/"; // login route
+      window.location.href = "/login"; // login route
     }, 1000);
      
     } catch (e: any) {
@@ -243,7 +248,7 @@ const validateName = (name: string) => {
           setAttemptsLeft(data?.attemptsLeft ?? null);
           break;
         case "USER_EXISTS":
-          setMsg("Account already exists.");
+          setMsg("Account already exists. Please Login");
           break;
           case "OTP_EXPIRED":
   setMsg("OTP expired. Please request a new one.");
@@ -507,7 +512,7 @@ const validatePassword = (password: string) => {
       <p className="text-center text-sm text-gray-400">
         Already have an account?{" "}
         <Link
-          to="/"
+          to="/login"
           className="text-[#00ff9d] hover:underline font-medium"
         >
           Login

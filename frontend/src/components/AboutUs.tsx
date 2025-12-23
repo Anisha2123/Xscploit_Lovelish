@@ -1,129 +1,117 @@
 import React from "react";
-import { FaLinkedin, FaGithub, FaTwitter, FaWhatsapp, FaInstagram, FaPhone } from "react-icons/fa";
+import { FaLinkedin, FaWhatsapp, FaInstagram, FaPhone } from "react-icons/fa";
 import { motion } from "framer-motion";
-import ProfessionalHighlights from "./Features"
-import "../App.css"
+import ProfessionalHighlights from "./Features";
+
 const AboutUs: React.FC = () => {
   return (
-    <section className="relative py-15 bg-[#080b0e] text-white overflow-hidden">
-      {/* Heading */}
-      <motion.h1
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="text-5xl md:text-6xl font-extrabold text-center mb-16 font-mono text-[#b084f5] tracking-widest"
-      >
-        // KNOW ABOUT US
-      </motion.h1>
+    <section className="relative bg-[#080b0e] text-white py-20">
+      {/* Container */}
+      <div className="max-w-6xl mx-auto px-6">
 
-      <div className="cards flex flex-col md:flex-row w-full mx-auto gap-12 p-5">
-  {/* Left: Avatar */}
-  <motion.div
-    initial={{ opacity: 0, x: -50 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.7 }}
-    className="left1 w-full md:w-1/3 flex justify-center"
-  >
-    <div className="w-48 h-48 rounded-full bg-[#0a0f14] border-4 border-[#00ff9d] flex items-center justify-center text-6xl font-bold text-[#00ff9d] relative shadow-[0_0_40px_#00ff9d33]">
-      LN
-      <span className="absolute inset-0 rounded-full border border-[#00ff9d44] animate-ping"></span>
-    </div>
-  </motion.div>
-
-  {/* Right: Info */}
-  <motion.div
-    initial={{ opacity: 0, x: 50 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.7 }}
-    className=" w-full md:w-2/3 flex flex-col gap-4"
-  >
-    <h2 className="text-4xl font-extrabold font-mono text-[#b084f5] tracking-wide">
-      Lovelish Nirmal
-    </h2>
-    <p className="text-[#00ff9d] font-mono font-semibold tracking-wide">
-      Ethical Hacker & Cybersecurity Trainer
-    </p>
-    <p className="text-gray-300 text-sm leading-relaxed">
-      Over 5 years of experience in penetration testing, bug bounty programs, and real-world cybersecurity projects. Trained 250+ students globally and contributed to international cybersecurity programs.
-    </p>
-
-    {/* Key Stats */}
-    <div className="flex flex-wrap gap-4 mt-4">
-      {[
-        { label: "Experience", value: "5+ Years" },
-        { label: "Students Trained", value: "250+" },
-        { label: "Bug Bounties", value: "15+" },
-        { label: "Global Projects", value: "20+" },
-        { label: "Certifications", value: "CEH, OSCP" },
-      ].map((stat, idx) => (
-        <motion.div
-          key={idx}
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+        {/* Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.1 * idx }}
-          className="max-sm:w-60 sm:w-60 px-4 py-2 bg-[#0a0f14] border-l-4 border-[#00ff9d] rounded-r-md text-[#00ff9d] font-mono font-bold shadow-[0_0_15px_#00ff9d22] text-sm"
+          transition={{ duration: 0.6 }}
+          className="text-center text-3xl md:text-4xl font-semibold tracking-widest text-[#b084f5] mb-16"
         >
-          {stat.label}: <span className="text-gray-300">{stat.value}</span>
-        </motion.div>
-      ))}
-    </div>
+          ABOUT US
+        </motion.h1>
 
-    {/* Socials */}
-    <div className=" icons flex gap-12 mt-6 text-[#00ff9d] text-2xl">
-  {/* LinkedIn */}
-  <a
-    href="https://www.linkedin.com/in/your-profile"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="LinkedIn"
-    className="hover:text-white transition-colors duration-200"
-  >
-    <FaLinkedin />
-  </a>
+        {/* Main Content */}
+        <div className="flex max-sm:flex-col md:flex-row items-center md:items-start gap-12">
 
-  {/* WhatsApp */}
-  <a
-    href="https://wa.me/919619370942"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="WhatsApp"
-    className="hover:text-white transition-colors duration-200"
-  >
-    <FaWhatsapp />
-  </a>
+          {/* Avatar */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex justify-center md:justify-start w-full md:w-1/3"
+          >
+            <img
+              src="/images/dp.png"
+              alt="Profile"
+              className="max-sm:w-44 max-sm:h-44 sm:w-92 sm:h-92 rounded-lg object-cover bg-white/5"
+            />
+          </motion.div>
 
-  {/* Instagram */}
-  <a
-    href="https://www.instagram.com/your-handle"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Instagram"
-    className="hover:text-white transition-colors duration-200"
-  >
-    <FaInstagram />
-  </a>
+          {/* Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="w-full md:w-2/3 max-sm:text-center md:text-left"
+          >
+            <h2 className="text-2xl md:text-3xl font-semibold text-[#b084f5]">
+              Lovelish Nirmal
+            </h2>
 
-  {/* Phone */}
-  <a
-    href="tel:+919619370942"
-    aria-label="Call"
-    className="hover:text-white transition-colors duration-200"
-  >
-    <FaPhone />
-  </a>
+            <p className="mt-2 text-sm tracking-wide text-[#00ff9d]">
+              Ethical Hacker & Cybersecurity Trainer
+            </p>
 
+            <p className="mt-4 text-sm text-gray-300 leading-relaxed max-w-xl mx-auto md:mx-0">
+              Over 5 years of experience in penetration testing, bug bounty programs,
+              and real-world cybersecurity projects. Trained 250+ students globally
+              and contributed to international cybersecurity initiatives.
+            </p>
 
-    </div>
-  </motion.div>
-</div>
+            {/* Stats */}
+            <div className="mt-8 grid max-sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center md:justify-start">
+              {[
+                { label: "Experience", value: "5+ Years" },
+                { label: "Students", value: "250+" },
+                { label: "Bug Bounties", value: "15+" },
+                { label: "Projects", value: "20+" },
+                { label: "Certifications", value: "CEH, OSCP" },
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  className="px-4 py-3 bg-[#0a0f14] border border-white/10 rounded-md text-center"
+                >
+                  <p className="text-xs text-gray-400">{stat.label}</p>
+                  <p className="mt-1 text-sm font-medium text-[#00ff9d]">
+                    {stat.value}
+                  </p>
+                </div>
+              ))}
+            </div>
 
+            {/* Socials */}
+            <div className="mt-8 flex max-sm:justify-center md:justify-start gap-3">
+              {[
+                { href: "https://www.linkedin.com/in/lovelish-nirmal-516a383a0/", icon: <FaLinkedin /> },
+                { href: "https://wa.me/919619370942", icon: <FaWhatsapp /> },
+                { href: "https://www.instagram.com/your-handle", icon: <FaInstagram /> },
+                { href: "tel:+919619370942", icon: <FaPhone /> },
+              ].map((item, i) => (
+                <a
+                  key={i}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 flex items-center justify-center
+                             rounded-md border border-white/10
+                             text-gray-400 hover:text-[#00ff9d]
+                             hover:border-[#00ff9d40]
+                             transition"
+                >
+                  {React.cloneElement(item.icon, { size: 15 })}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        </div>
 
-      {/* Achievements / Skills */}
-      <ProfessionalHighlights />
+        {/* Highlights */}
+        <div className="mt-20">
+          <ProfessionalHighlights />
+        </div>
+      </div>
     </section>
   );
 };

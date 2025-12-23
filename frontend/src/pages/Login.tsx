@@ -14,7 +14,7 @@ const Login = () => {
   const navigate = useNavigate();
 const location = useLocation();
 
-const from = location.state?.from || "/Xsploit";
+const from = location.state?.from || "/";
  console.log("API BASE URL:", import.meta.env.VITE_API_BASE_URL);
 
 

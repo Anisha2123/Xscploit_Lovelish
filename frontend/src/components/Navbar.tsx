@@ -9,7 +9,7 @@ const Navbar = () => {
   const userId = localStorage.getItem("userId"); // or wherever you store it
 
   const navLinks = [
-    { label: "Home", path: "/Xsploit" },
+    { label: "Home", path: "/" },
     { label: "Courses", path: "/courses" },
     // { label: "Labs", path: "/labs" },
     // { label: "Pricing", path: "/pricing" },
@@ -23,7 +23,7 @@ const Navbar = () => {
 
         {/* Logo */}
         <div
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/login")}
           className="text-xl font-semibold tracking-wide text-white cursor-pointer"
         >
           X<span className="text-[#00ff9d]">sploit</span>

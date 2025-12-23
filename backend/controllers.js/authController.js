@@ -106,15 +106,6 @@ const signup = async (req, res) => {
      console.log(`sign rout hit `);
      console.log(req.body);
 
-     
-    // 3. Validate password strength
-    // At least 8 chars, 1 letter, 1 number
-    // const passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    // if (!passRegex.test(password)) {
-    //   return res.status(400).json({ error: "WEAK_PASSWORD" });
-    // }
-   
-
     // 4. Check if user already exists
     const exist = await User.findOne({ email });
     if (exist) {

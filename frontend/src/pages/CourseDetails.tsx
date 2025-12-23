@@ -15,7 +15,7 @@ import {
   Boxes,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import { useNavigate, useLocation } from "react-router-dom";
 
 
@@ -41,7 +41,7 @@ if (!userId) {
 
       <button
         onClick={() =>
-          navigate("/", {
+          navigate("/login", {
             state: { from: location.pathname }
           })
         }
