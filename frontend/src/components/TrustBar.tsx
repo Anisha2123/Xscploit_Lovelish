@@ -1,204 +1,288 @@
 import { motion } from "framer-motion";
 // import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useRef } from "react";
+import JanuaryOfferPromo from "./Promos/JanuaryOfferPromo";
+import "../App.css"
+import NewYearStickyBar from "./Promos/NewYearStickyBar";
 const TrustShowcase = () => {
-  const [timeLeft, setTimeLeft] = useState("02d 14h 32m");
 
-  // (UI placeholder – connect real timer later)
+   const particles = useRef(
+    [...Array(12)].map(() => ({
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      delay: Math.random() * 2,
+      duration: 2 + Math.random() * 2,
+    }))
+  );
+
+  const targetTime = useRef(
+    new Date(Date.now() + 2 * 24 * 60 * 60 * 1000 + 14 * 60 * 60 * 1000 + 32 * 60 * 1000)
+  );
+
+  const formatTime = (ms: number) => {
+    const totalSeconds = Math.max(Math.floor(ms / 1000), 0);
+
+    const days = Math.floor(totalSeconds / (24 * 3600));
+    const hours = Math.floor((totalSeconds % (24 * 3600)) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${String(days).padStart(2, "0")}d 
+            ${String(hours).padStart(2, "0")}h 
+            ${String(minutes).padStart(2, "0")}m 
+            ${String(seconds).padStart(2, "0")}s`;
+  };
+
+  const [timeLeft, setTimeLeft] = useState(
+    formatTime(targetTime.current.getTime() - Date.now())
+  );
+
   useEffect(() => {
-    const i = setInterval(() => {
-      setTimeLeft("02d 14h 31m");
-    }, 60000);
-    return () => clearInterval(i);
+    const interval = setInterval(() => {
+      setTimeLeft(formatTime(targetTime.current.getTime() - Date.now()));
+    }, 1000); // updates every second
+
+    return () => clearInterval(interval);
   }, []);
   return (
      <section className="relative py-10 bg-[#080b0e]">
       <div className="max-w-7xl mx-auto px-6">
 
+   <JanuaryOfferPromo />
         {/* Cards */}
         <div className="grid md:grid-cols-3 gap-10">
 
           {/* ================= WEBINAR ================= */}
-         <motion.div
-  initial={{ opacity: 0, y: 40 }}
+      <motion.div
+  initial={{ opacity: 0, y: 30 }}
   whileInView={{ opacity: 1, y: 0 }}
   viewport={{ once: true }}
-  className="relative bg-[#0b0f14] border border-white/10 rounded-2xl overflow-hidden shadow-lg"
+  className="
+    relative
+    bg-[#0b0f14]
+    border border-white/10
+    rounded-2xl
+    overflow-hidden
+    h-[400px]
+    flex flex-col
+  "
 >
-  {/* ===== TOP PROMO STRIP ===== */}
-  <div className="absolute top-0 inset-x-0 z-30 flex items-center justify-between px-6 py-3 
-                  bg-gradient-to-r from-red-600/90 to-red-500/70 backdrop-blur-md">
-    <div className="flex items-center gap-3">
-      <span className="text-xs font-semibold text-red-300 uppercase
-    tracking-widest">
-        Live Webinar
-      </span>
-      
-    </div>
+  {/* TOP META */}
+  <div className="flex items-center justify-between px-8 pt-6">
+    <span className="text-[11px] uppercase tracking-widest text-red-400">
+      Live Webinar
+    </span>
 
-    <span className="text-xs font-medium text-white/90">
-      Only <strong className="text-red-300">100 Seats</strong>
+    <span className="text-[11px] text-gray-400">
+      Limited to <span className="text-red-400">100 seats</span>
     </span>
   </div>
 
-  {/* ===== IMAGE WRAPPER ===== */}
-  <div className="relative">
-    {/* ===== TIMER OVER IMAGE ===== */}
-    <div className="absolute top-40 left-1/2 z-20 w-45">
-      <div className="px-5 py-2 rounded-2xl 
-                      bg-black/80 border border-red-500/40
-                      text-red-400 font-mono text-xs
-                      shadow-[0_0_25px_rgba(255,0,0,0.25)]
-                      backdrop-blur-md">
-         Starts in <span className="font-semibold">{timeLeft}</span>
-      </div>
-    </div>
-
-    {/* IMAGE */}
+  {/* IMAGE */}
+  <div className="relative mt-4 h-48 bg-[#111827]">
     <img
       src="/images/webinar.png"
       alt="Ethical Hacking Webinar"
-      className="h-52 top-0 w-full object-cover z-20 opacity-40"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+      className="absolute inset-0 w-full h-full object-cover opacity-95"
     />
+
+    {/* Subtle overlay */}
+    <div className="absolute inset-0 bg-[#080b0e]/35" />
+
+    {/* Countdown */}
+    <div
+      className="absolute bottom-4 left-1/2 -translate-x-1/2 
+                 px-4 py-1.5 rounded-lg 
+                 border border-white/10 
+                 text-[11px] font-mono text-red-400 
+                 bg-black/40 backdrop-blur-sm"
+    >
+      Starts in {timeLeft}
+    </div>
   </div>
 
-  {/* ===== CONTENT ===== */}
-  <div className="p-6">
-    <h3 className="text-xl font-semibold text-white mb-4 leading-snug">
+  {/* CONTENT */}
+  <div className="px-8 py-6 flex flex-col flex-1 ">
+    <h3 className="text-xl font-medium text-white leading-snug mb-2">
       Getting Started with Ethical Hacking
     </h3>
 
-    {/* CTA */}
-   <button
-  className="
-    w-full py-3 rounded-xl font-semibold
-    uppercase
-    tracking-widest
-    bg-gradient-to-r from-red-700 via-red-500 to-red-400 text-sm
-    hover:from-red-600 hover:via-red-500 hover:to-red-400
-    text-white font-semibold tracking-wide
-    shadow-[0_12px_35px_rgba(220,38,38,0.35)]
-    border border-red-500/40
-    transition-all duration-200
-  "
->
-  Coming soon
-</button>
-
-
-
-
+    {/* CTA — pinned */}
+    <button
+      disabled
+      className="
+        mt-auto
+        w-full
+        py-3
+        rounded-lg
+        border border-white/10
+        text-sm
+        text-gray-300
+        bg-white/[0.02]
+        cursor-not-allowed
+      "
+    >
+      Registration Opens Soon
+    </button>
   </div>
 </motion.div>
 
 
 
+
           {/* ================= ANDROID ================= */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="relative bg-[#0b0f14] border border-white/10 rounded-xl overflow-hidden"
-          >
-            {/* Badge */}
-            <div className="absolute top-4 left-4 z-20">
-              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-[#7f1d1d] text-red-300">
-                LAUNCHING SOON
-              </span>
-              
-            </div>
-
-            {/* Price */}
-            <div className="absolute top-4 right-4 z-20 text-sm bg-black/60 px-3 py-1 rounded-full border border-red-500/30 text-red-400">
-              ₹2,999
-            </div>
-
-            <img
-              src="/images/android-hacking.png"
-              alt="Android Hacking"
-              className="h-52 w-full object-cover opacity-40"
-            />
-
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-white mb-4 leading-snug">
-                Android Hacking
-              </h3>
-
-          
-<button
+      <motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ delay: 0.1 }}
   className="
-    w-full
-    py-3
-    rounded-xl
-    text-sm
-    font-semibold
-    uppercase
-    tracking-widest
-    text-emerald-900
-    bg-gradient-to-r from-emerald-300 to-amber-300
-    shadow-md
-    cursor-default
+    relative
+    bg-[#0b0f14]
+    border border-white/10
+    rounded-2xl
+    overflow-hidden
+    h-[400px]
+    flex flex-col
   "
 >
-  Early access coming soon
-</button>
+  {/* TOP META */}
+  <div className="absolute top-5 left-5 z-20">
+    <span className="px-3 py-1 text-[11px] uppercase tracking-widest 
+                     rounded-full border border-emerald-500/30 
+                     text-emerald-400 bg-emerald-500/10">
+      Launching Soon
+    </span>
+  </div>
+
+  <div className="absolute top-5 right-5 z-20 
+                  px-3 py-1 rounded-full 
+                  border border-white/15 
+                  bg-black/40 text-[11px] text-gray-300">
+    ₹2,999
+  </div>
+
+  {/* IMAGE */}
+  <div className="relative h-62 bg-[#111827]">
+    <img
+      src="/images/android-hacking.png"
+      alt="Android Hacking"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+      className="absolute h-62 inset-0 w-full object-cover opacity-95"
+    />
+    <div className="absolute inset-0 bg-[#080b0e]/35" />
+  </div>
+
+  {/* CONTENT */}
+  <div className="p-6 flex flex-col flex-1">
+    <h3 className="text-xl font-medium text-white leading-snug">
+      Android Hacking
+    </h3>
+
+    {/* CTA — pinned */}
+    <button
+      disabled
+      className="
+        mt-auto
+        w-full
+        py-2.5
+        rounded-lg
+        border border-white/10
+        text-sm
+        tracking-wide
+        text-gray-300
+        bg-white/[0.02]
+        cursor-not-allowed
+      "
+    >
+      Early Access Opening Soon
+    </button>
+  </div>
+</motion.div>
 
 
-            </div>
-          </motion.div>
 
           {/* ================= KALI ================= */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="relative bg-[#0b0f14] border border-white/10 rounded-xl overflow-hidden"
-          >
-            <div className="absolute top-4 left-4 z-20">
-              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-[#7f1d1d] text-red-300">
-                COMING SOON
-              </span>
-            </div>
-
-            <div className="absolute top-4 right-4 z-20 text-sm bg-black/60 px-3 py-1 rounded-full border border-red-500/30 text-red-400">
-              ₹3,499
-            </div>
-
-            <img
-              src="/images/kali-linux.png"
-              alt="Kali Linux"
-              className="h-52 w-full object-cover opacity-40"
-            />
-
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-white mb-4 leading-snug">
-                Kali Linux Mastery
-              </h3>
-              <button
+      <motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ delay: 0.2 }}
   className="
-    w-full
-    py-3
-    rounded-xl
-    text-sm
-    font-semibold
-    uppercase
-    tracking-widest
-    text-emerald-900
-    bg-gradient-to-r from-emerald-300 to-amber-300
-    shadow-md
-    cursor-default
+    relative
+    bg-[#0b0f14]
+    border border-white/10
+    rounded-2xl
+    overflow-hidden
+    h-[400px]
+    flex flex-col
   "
 >
-  Launching Shortly
-</button>
+    {/* TOP META */}
+  <div className="absolute top-5 left-5 z-20">
+    <span className="px-3 py-1 text-[11px] uppercase tracking-widest 
+                     rounded-full border border-emerald-500/30 
+                     text-emerald-400 bg-emerald-500/10">
+      Launching Soon
+    </span>
+  </div>
 
-            </div>
-          </motion.div>
+  <div className="absolute top-5 right-5 z-20 
+                  px-3 py-1 rounded-full 
+                  border border-white/15 
+                  bg-black/40 text-[11px] text-gray-300">
+    ₹3,999
+  </div>
+  {/* IMAGE */}
+  <div className="relative h-62 bg-[#111827]">
+    <img
+      src="/images/promotions/kali-linux.webp"
+      alt="Kali Linux Mastery"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+      className="absolute inset-0 w-full h-62 object-cover opacity-65"
+    />
+    <div className="absolute inset-0 bg-[#080b0e]/35" />
+  </div>
+
+  {/* CONTENT */}
+  <div className="p-6 flex flex-col flex-1">
+    <h3 className="text-lg font-medium text-white">
+      Kali Linux Mastery
+    </h3>
+
+    {/* CTA pinned */}
+    <button
+      disabled
+      className="
+        mt-auto
+        w-full
+        py-2.5
+        rounded-lg
+        border border-white/10
+        text-sm
+        tracking-wide
+        text-gray-300
+        bg-white/[0.02]
+        cursor-not-allowed
+      "
+    >
+      Launching Shortly
+    </button>
+  </div>
+</motion.div>
+
+
+
 
         </div>
+        <NewYearStickyBar />
       </div>
     </section>
   );

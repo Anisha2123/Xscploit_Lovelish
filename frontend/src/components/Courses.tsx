@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import "../App.css";
 
 const Courses: React.FC = () => {
   const [showMore, setShowMore] = useState(false);
@@ -110,17 +110,17 @@ const Courses: React.FC = () => {
     price: "₹3,999",
     image:"/images/card1.png"
   },
-  {
-  slug: "cyber-security-master-008",
-  title: "ULTIMATE ETHICAL HACKER BUNDLE",
-  desc: "Complete All in One Course with advance AI and bug bounty",
-  icon: <Shield size={42} />, // keep Shield for authority & trust
-  duration: "8–9 Months",
-  level: "Pro",
-  oldPrice: "₹25,000",
-  price: "₹14,999",
-  image: "/images/card1.png",
-}
+//   {
+//   slug: "cyber-security-master-008",
+//   title: "ULTIMATE ETHICAL HACKER BUNDLE",
+//   desc: "Complete All in One Course with advance AI and bug bounty",
+//   icon: <Shield size={42} />, // keep Shield for authority & trust
+//   duration: "8–9 Months",
+//   level: "Pro",
+//   oldPrice: "₹25,000",
+//   price: "₹14,999",
+//   image: "/images/card1.png",
+// }
 
 ];
 
@@ -178,6 +178,8 @@ const Courses: React.FC = () => {
              hover:border-[#00ff9d]/40 hover:-translate-y-1 
              transition-all overflow-hidden"
 >
+
+  
   {/* Image */}
   <div className="relative w-full h-[220px] overflow-hidden">
   <img
@@ -213,14 +215,48 @@ const Courses: React.FC = () => {
     </div>
 
     {/* Price */}
-    <div className="flex items-center gap-3 mb-6">
+    {/* <div className="flex items-center gap-3 mb-6">
       <span className="line-through text-gray-500 text-sm">
         {course.oldPrice}
       </span>
       <span className="text-lg font-semibold text-white">
         {course.price}
       </span>
+      
+    </div> */}
+    <div className="flex items-center gap-3 mb-6 relative">
+  {/* Original Price */}
+  <span className="text-gray-400 text-sm line-through relative">
+    {course.oldPrice}
+  </span>
+
+  {/* Discounted Price */}
+  <span className="text-white text-lg font-semibold relative">
+    {course.price}
+  </span>
+
+  {/* Premium Animated Offer Badge */}
+  <div className="relative ml-2 group">
+    {/* Badge */}
+    <div className="px-3 py-1 rounded-md 
+                    bg-gradient-to-r from-amber-300 via-yellow-300 to-orange-300
+                    text-amber-900 text-xs font-semibold uppercase tracking-wide
+                    flex items-center gap-1 transform transition-all duration-300 group-hover:scale-105
+                    shadow-lg shadow-yellow-500/50 animate-pulseBadge">
+      🎅 Santa50 
     </div>
+
+    {/* Tiny pointer connecting badge to price */}
+    <div className="absolute -left-1 -top-1 w-2 h-2 
+                    bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-300 
+                    rotate-45 transform origin-center"></div>
+  </div>
+</div>
+
+
+
+
+
 
     {/* CTA */}
     <Link to={`/course/${course.slug}`}>

@@ -90,5 +90,56 @@ button,a{
     display: flex;
   }
 }
+/* firework promo */
+/* Firework particle animation */
+@keyframes firework {
+  0% {
+    transform: scale(0.2);
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.firework {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #facc15, transparent 70%);
+  animation: firework 2.5s ease-out infinite;
+  filter: blur(1px);
+}
+
+@keyframes firework {
+  0% { transform: scale(0.3); opacity: 1; }
+  70% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.animate-firework {
+  animation-name: firework;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+
+/* ========= courses========== */
+@keyframes pulseBadge {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6), 0 0 12px rgba(255, 165, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(255, 215, 0, 0.8), 0 0 18px rgba(255, 165, 0, 0.6);
+  }
+}
+
+.animate-pulseBadge {
+  animation: pulseBadge 1.5s ease-in-out infinite;
+}
 
 
