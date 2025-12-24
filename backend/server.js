@@ -36,7 +36,7 @@ app.post(
 
 const allowedOrigins = [
   "https://www.xsploithack.com",
-  "https://xsploithack.com"
+  "https://xsploithack.com",
   // "http://localhost:5173"
 ];
 

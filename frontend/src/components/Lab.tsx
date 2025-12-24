@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, Terminal, Flag } from "lucide-react";
+import LabsGrid from "./LabGrid";
 
 const Labs: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -68,7 +69,7 @@ window.addEventListener("resize", resizeCanvas);
       className="absolute inset-0 opacity-20 pointer-events-none"
     />
 
-    <div className="relative z-10 max-w-6xl mx-auto px-6 grid sm:grid-cols-1 md:grid-cols-2 gap-20 items-start">
+    <div className="relative z-10 max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-1 gap-20 items-start">
       
       {/* LEFT CONTENT */}
       <motion.div
@@ -163,6 +164,7 @@ window.addEventListener("resize", resizeCanvas);
         })}
       </div>
     </div>
+    <LabsGrid />
   </section>
 );
 

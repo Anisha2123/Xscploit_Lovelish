@@ -1,91 +1,262 @@
-import { ShieldCheck, Users, Terminal, Award } from "lucide-react";
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const Stat = ({ value, label, Icon }) => {
-  const [count, setCount] = useState(0);
+const TrustShowcase = () => {
+  const [timeLeft, setTimeLeft] = useState("02d 14h 32m");
 
+  // (UI placeholder – connect real timer later)
   useEffect(() => {
-    let start = 0;
-    const end = value;
-    const duration = 1200;
-    const stepTime = Math.max(Math.floor(duration / end), 20);
-
-    const timer = setInterval(() => {
-      start += 1;
-      setCount(start);
-      if (start === end) clearInterval(timer);
-    }, stepTime);
-
-    return () => clearInterval(timer);
-  }, [value]);
-
+    const i = setInterval(() => {
+      setTimeLeft("02d 14h 31m");
+    }, 60000);
+    return () => clearInterval(i);
+  }, []);
   return (
-    <div className="flex flex-col items-center text-center">
-      <div className="mb-4 flex items-center justify-center w-12 h-12 rounded-xl bg-[#00ff9d14]">
-        <Icon className="w-6 h-6 text-[#00ff9d]" />
-      </div>
-      <h3 className="text-3xl font-bold text-white tracking-tight">
-        {count}+
-      </h3>
-      <p className="text-sm text-gray-400 mt-1">{label}</p>
+     <section className="relative py-10 bg-[#080b0e]">
+      <div className="max-w-7xl mx-auto px-6">
+
+        {/* Cards */}
+        <div className="grid md:grid-cols-3 gap-10">
+
+          {/* ================= WEBINAR ================= */}
+         <motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  className="relative bg-[#0b0f14] border border-white/10 rounded-2xl overflow-hidden shadow-lg"
+>
+  {/* ===== TOP PROMO STRIP ===== */}
+  <div className="absolute top-0 inset-x-0 z-30 flex items-center justify-between px-6 py-3 
+                  bg-gradient-to-r from-red-600/90 to-red-500/70 backdrop-blur-md">
+    <div className="flex items-center gap-3">
+      <span className="text-xs font-semibold text-red-300 uppercase
+    tracking-widest">
+        Live Webinar
+      </span>
+      
     </div>
-  );
-};
 
-const TrustBar = () => {
-  const companies = [
-    { name: "Google", src: "/logos/gojek.svg" },
-    { name: "Amazon", src: "/logos/googlepay.svg" },
-    { name: "Microsoft", src: "/logos/esotericsoftware.svg" },
-    { name: "Amazon", src: "/logos/googlepay.svg" },
-    { name: "Microsoft", src: "/logos/helix.svg" },
-    { name: "Amazon", src: "/logos/delta.svg" },
-    { name: "Microsoft", src: "/logos/bmcsoftware.svg" },
-    { name: "Meta", src: "/logos/jirasoftware.svg" },
-  ];
+    <span className="text-xs font-medium text-white/90">
+      Only <strong className="text-red-300">100 Seats</strong>
+    </span>
+  </div>
 
-  return (
-    <section className="relative w-full bg-[#0a0d0c] py-20 overflow-hidden">
-      {/* cyber scan line */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(0,255,157,0.08),transparent)] animate-pulse" />
+  {/* ===== IMAGE WRAPPER ===== */}
+  <div className="relative">
+    {/* ===== TIMER OVER IMAGE ===== */}
+    <div className="absolute top-40 left-1/2 z-20 w-45">
+      <div className="px-5 py-2 rounded-2xl 
+                      bg-black/80 border border-red-500/40
+                      text-red-400 font-mono text-xs
+                      shadow-[0_0_25px_rgba(255,0,0,0.25)]
+                      backdrop-blur-md">
+         Starts in <span className="font-semibold">{timeLeft}</span>
+      </div>
+    </div>
 
-      {/* glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#00ff9d18,transparent_60%)]" />
+    {/* IMAGE */}
+    <img
+      src="/images/webinar.png"
+      alt="Ethical Hacking Webinar"
+      className="h-52 top-0 w-full object-cover z-20 opacity-40"
+    />
+  </div>
 
-      <div className="relative max-w-6xl mx-auto px-6">
-        {/* stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-          <Stat value={250} label="Students Trained" Icon={Users} />
-          <Stat value={120} label="Security Modules" Icon={Award} />
-          <Stat value={50} label="Live Labs" Icon={Terminal} />
-          <Stat value={95} label="Success Rate" Icon={ShieldCheck} />
-        </div>
+  {/* ===== CONTENT ===== */}
+  <div className="p-6">
+    <h3 className="text-xl font-semibold text-white mb-4 leading-snug">
+      Getting Started with Ethical Hacking
+    </h3>
 
-        {/* trusted by companies */}
-        <div className="mt-20 text-center">
-          <p className="text-xs uppercase tracking-widest text-gray-500 mb-8">
-            Trusted by learners placed at
-          </p>
+    {/* CTA */}
+   <button
+  className="
+    w-full py-3 rounded-xl font-semibold
+    uppercase
+    tracking-widest
+    bg-gradient-to-r from-red-700 via-red-500 to-red-400 text-sm
+    hover:from-red-600 hover:via-red-500 hover:to-red-400
+    text-white font-semibold tracking-wide
+    shadow-[0_12px_35px_rgba(220,38,38,0.35)]
+    border border-red-500/40
+    transition-all duration-200
+  "
+>
+  Coming soon
+</button>
 
-          <div className="flex flex-wrap justify-center items-center gap-14 opacity-70">
-            {companies.map((c, i) => (
-              <motion.img
-                key={i}
-                src={c.src}
-                alt={c.name}
-                className="h-7 brightness-0 invert opacity-70 hover:opacity-100 transition"
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-              />
-            ))}
-          </div>
+
+
+
+  </div>
+</motion.div>
+
+
+
+          {/* ================= ANDROID ================= */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="relative bg-[#0b0f14] border border-white/10 rounded-xl overflow-hidden"
+          >
+            {/* Badge */}
+            <div className="absolute top-4 left-4 z-20">
+              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-[#7f1d1d] text-red-300">
+                LAUNCHING SOON
+              </span>
+              
+            </div>
+
+            {/* Price */}
+            <div className="absolute top-4 right-4 z-20 text-sm bg-black/60 px-3 py-1 rounded-full border border-red-500/30 text-red-400">
+              ₹2,999
+            </div>
+
+            <img
+              src="/images/android-hacking.png"
+              alt="Android Hacking"
+              className="h-52 w-full object-cover opacity-40"
+            />
+
+            <div className="p-6">
+              <h3 className="text-xl font-semibold text-white mb-4 leading-snug">
+                Android Hacking
+              </h3>
+
+          
+<button
+  className="
+    w-full
+    py-3
+    rounded-xl
+    text-sm
+    font-semibold
+    uppercase
+    tracking-widest
+    text-emerald-900
+    bg-gradient-to-r from-emerald-300 to-amber-300
+    shadow-md
+    cursor-default
+  "
+>
+  Early access coming soon
+</button>
+
+
+            </div>
+          </motion.div>
+
+          {/* ================= KALI ================= */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="relative bg-[#0b0f14] border border-white/10 rounded-xl overflow-hidden"
+          >
+            <div className="absolute top-4 left-4 z-20">
+              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-[#7f1d1d] text-red-300">
+                COMING SOON
+              </span>
+            </div>
+
+            <div className="absolute top-4 right-4 z-20 text-sm bg-black/60 px-3 py-1 rounded-full border border-red-500/30 text-red-400">
+              ₹3,499
+            </div>
+
+            <img
+              src="/images/kali-linux.png"
+              alt="Kali Linux"
+              className="h-52 w-full object-cover opacity-40"
+            />
+
+            <div className="p-6">
+              <h3 className="text-xl font-semibold text-white mb-4 leading-snug">
+                Kali Linux Mastery
+              </h3>
+              <button
+  className="
+    w-full
+    py-3
+    rounded-xl
+    text-sm
+    font-semibold
+    uppercase
+    tracking-widest
+    text-emerald-900
+    bg-gradient-to-r from-emerald-300 to-amber-300
+    shadow-md
+    cursor-default
+  "
+>
+  Launching Shortly
+</button>
+
+            </div>
+          </motion.div>
+
         </div>
       </div>
     </section>
   );
 };
 
-export default TrustBar;
+export default TrustShowcase;
+
+/* ---------- CARD ---------- */
+
+const PromoCard = ({
+  tag,
+  title,
+  desc,
+  image,
+  highlight = false,
+}: {
+  tag: string;
+  title: string;
+  desc: string;
+  image: string;
+  highlight?: boolean;
+}) => {
+  return (
+    <motion.div
+      whileHover={{ y: -6 }}
+      transition={{ type: "spring", stiffness: 200 }}
+      className={`relative rounded-2xl overflow-hidden border 
+        ${highlight ? "border-[#00ff9d55]" : "border-white/10"}
+        bg-[#0a0f14]`}
+    >
+      {/* image */}
+      <div className="h-44 overflow-hidden">
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover opacity-80"
+        />
+      </div>
+
+      {/* content */}
+      <div className="p-6 space-y-3">
+        <span className="text-xs uppercase tracking-widest text-[#00ff9d]">
+          {tag}
+        </span>
+
+        <h3 className="text-lg font-semibold text-white">
+          {title}
+        </h3>
+
+        <p className="text-sm text-gray-400 leading-relaxed">
+          {desc}
+        </p>
+      </div>
+
+      {/* glow for webinar */}
+      {highlight && (
+        <div className="absolute inset-0 pointer-events-none border border-[#00ff9d33] rounded-2xl shadow-[0_0_40px_#00ff9d22]" />
+      )}
+    </motion.div>
+  );
+};

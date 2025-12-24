@@ -40,8 +40,8 @@ const Courses: React.FC = () => {
   //   icon: <Shield size={42} />,
   //   duration: "2 Months",
   //   level: "Beginner",
-  //   oldPrice: "₹15,000",
-  //   price: "₹9,999",
+  //   oldPrice: "₹5,000",
+  //   price: "₹1,999",
   //   image:"/images/card1.png"
   // },
   {
@@ -51,8 +51,8 @@ const Courses: React.FC = () => {
     icon: <Cpu size={42} />,
     duration: "3 Months",
     level: "Intermediate",
-    oldPrice: "₹25,000",
-    price: "₹14,999",
+    oldPrice: "₹5,000",
+    price: "₹3,499",
     image:"/images/card1.png"
   },
   {
@@ -61,9 +61,9 @@ const Courses: React.FC = () => {
     desc: "Attack and secure enterprise networks, routers & protocols.",
     icon: <Network size={42} />,
     duration: "2.5 Months",
-    level: "Pro",
-    oldPrice: "₹22,000",
-    price: "₹14,999",
+    level: "Beginner",
+    oldPrice: "₹5,000",
+    price: "₹2,999",
     image:"/images/card1.png"
   },
   {
@@ -73,8 +73,8 @@ const Courses: React.FC = () => {
     icon: <Globe size={42} />,
     duration: "2 Months",
     level: "Intermediate",
-    oldPrice: "₹20,000",
-    price: "₹14,999",
+    oldPrice: "₹7,000",
+    price: "₹4,999",
     image:"/images/card1.png"
   },
   // {
@@ -83,7 +83,7 @@ const Courses: React.FC = () => {
   //   desc: "Analyze APKs, reverse engineer apps, exploit mobile security.",
   //   icon: <Smartphone size={42} />,
   //   duration: "2 Months",
-  //   level: "Pro",
+  //   level: "Intermediate",
   //   oldPrice: "₹18,000",
   //   price: "₹9,999",
   //   image:"/images/card1.png"
@@ -95,7 +95,7 @@ const Courses: React.FC = () => {
     icon: <Brain size={42} />,
     duration: "1.5 Months",
     level: "Intermediate",
-    oldPrice: "₹19,000",
+    oldPrice: "₹5,000",
     price: "₹3,999",
     image:"/images/card1.png"
   },
@@ -106,10 +106,22 @@ const Courses: React.FC = () => {
     icon: <Bug size={42} />,
     duration: "2 Months",
     level: "Beginner",
-    oldPrice: "₹17,000",
+    oldPrice: "₹5,000",
     price: "₹3,999",
     image:"/images/card1.png"
   },
+  {
+  slug: "cyber-security-master-008",
+  title: "ULTIMATE ETHICAL HACKER BUNDLE",
+  desc: "Complete All in One Course with advance AI and bug bounty",
+  icon: <Shield size={42} />, // keep Shield for authority & trust
+  duration: "8–9 Months",
+  level: "Pro",
+  oldPrice: "₹25,000",
+  price: "₹14,999",
+  image: "/images/card1.png",
+}
+
 ];
 
 
@@ -240,13 +252,25 @@ const Courses: React.FC = () => {
 <div className="mt-16 flex justify-center">
   <div className="max-w-3xl w-full text-center text-sm text-gray-400">
     
-    <div className="flex items-center justify-center gap-2 mb-2">
-      <MapPin size={14} className="text-[#00ff9d]" />
-      <span>
-        Offline classroom training is available for select courses in
-        <span className="text-white font-medium"> Mumbai</span>.
-      </span>
-    </div>
+    <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-sm text-gray-400">
+  <div className="flex items-center gap-2">
+    <MapPin size={14} className="text-[#00ff9d]" />
+    <span>
+      Offline classroom training available in
+      <a
+    href="https://maps.app.goo.gl/QRfJaQ7qjNwWbqbP8"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="ml-1 no-underline font-bold inline-flex items-center gap-1 text-[#00ff9d] hover:text-white transition"
+  >
+    Mumbai
+  </a>
+    </span>
+  </div>
+
+  
+</div>
+
 
     <p className="text-gray-500">
       Sessions are conducted in small batches with hands-on lab access.

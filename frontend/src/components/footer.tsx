@@ -98,7 +98,7 @@ const Footer: React.FC = () => {
           {/* Socials */}
           <div className="flex gap-4 mt-6 text-lg">
             <a href="https://www.linkedin.com/in/lovelish-nirmal-516a383a0/" className="hover:text-white"><FaLinkedin /></a>
-            <a href="#" className="hover:text-white"><FaInstagram /></a>
+            <a href="https://www.instagram.com/xsploithack/" className="hover:text-white"><FaInstagram /></a>
           </div>
         </div>
       </motion.div>

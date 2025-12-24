@@ -13,6 +13,7 @@ import WhyXsploit from "../components/WhyXsploit";
 import Testimonials from "../components/Testimonials";
 import CTA from "../components/CTA";
 import Contact from "./Contact";
+import LabsGrid from "../components/LabGrid";
 // import '../App.css'
 
 const Xsploit = () => {
@@ -25,7 +26,7 @@ const Xsploit = () => {
    <Courses/>
    <LearningPath />
    <WhyXsploit />
-   <Lab />
+   <LabsGrid />
    <AboutUs/>
    <Testimonials />
    <CTA />

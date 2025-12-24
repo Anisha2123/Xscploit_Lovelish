@@ -86,7 +86,7 @@ const AboutUs: React.FC = () => {
               {[
                 { href: "https://www.linkedin.com/in/lovelish-nirmal-516a383a0/", icon: <FaLinkedin /> },
                 { href: "https://wa.me/919619370942", icon: <FaWhatsapp /> },
-                { href: "https://www.instagram.com/your-handle", icon: <FaInstagram /> },
+                { href: "https://www.instagram.com/xsploithack/", icon: <FaInstagram /> },
                 { href: "tel:+919619370942", icon: <FaPhone /> },
               ].map((item, i) => (
                 <a

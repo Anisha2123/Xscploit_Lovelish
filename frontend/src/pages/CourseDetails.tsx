@@ -272,7 +272,7 @@ useEffect(() => {
           </h3>
 
           {/* UNLOCK BUTTON */}
-          {!isUnlocked && (
+          {/* {!isUnlocked && (
             <button
               onClick={() => handleModulePayment(course.modules[i], i)}
               className="px-4 py-2 bg-[#00ff9d] text-black rounded-md font-semibold flex items-center gap-2 hover:scale-[1.05] transition-all"
@@ -280,7 +280,7 @@ useEffect(() => {
               Unlock ₹{m.price}
               <ArrowRight size={16} />
             </button>
-          )}
+          )} */}
         </div>
 
         {/* PDF (ONLY IF UNLOCKED) */}
@@ -339,7 +339,14 @@ useEffect(() => {
     <MapPin size={14} className="text-[#00ff9d]" />
     <span>
       Offline classroom training is available for this course in
-      <span className="text-white font-medium"> Mumbai</span>.
+      <a
+    href="https://maps.app.goo.gl/QRfJaQ7qjNwWbqbP8"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="ml-1 no-underline font-bold inline-flex items-center gap-1 text-[#00ff9d] hover:text-white transition"
+  >
+    Mumbai
+  </a>
     </span>
   </div>
 

@@ -22,7 +22,7 @@ const testimonials = [
   },
   {
     quote: "The hands-on labs and realistic scenarios helped me secure my first internship in cybersecurity!",
-    name: "Aditya Mehra",
+    name: "Trisha Mehra",
     role: "Cybersecurity Intern",
     image: "/images/t4.jpg",
   },
