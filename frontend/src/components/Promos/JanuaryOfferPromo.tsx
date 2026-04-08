@@ -76,7 +76,7 @@ export default function JanuaryOfferCountdown() {
             Kickstart 2026 with industry-ready cyber skills  
             <span className="block mt-5">
               <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-300 rounded-full text-black">
-  ⏰ Ends on 31th Jan
+  ⏰ Ends on 31st Jan
 </span>
 
 

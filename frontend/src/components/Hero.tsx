@@ -1,259 +1,188 @@
-/* Enhanced Hacking Minimalist Hero
-
-File: src/components/Hero.tsx
-Type: React + TypeScript + TailwindCSS
-
-This single file exports a default <Hero /> component and includes three internal subcomponents:
- - MatrixRain: canvas-based matrix code rain background
- - Terminal: fake terminal command line typing bar
- - HeroContent: decoding text + CTA buttons + animated scanner border
-
-Install (if not already):
-  npm install framer-motion
-
-Tailwind: make sure tailwind is configured. Add "neon" color in tailwind.config.js if desired.
-
-Usage:
- import Hero from "./components/Hero";
- // in App.tsx
- <Hero />
-
-*/
-
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-// ----------------------- MatrixRain -----------------------
-const MatrixRain: React.FC<{ opacity?: number }> = ({ opacity = 0.18 }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let w = (canvas.width = innerWidth);
-    let h = (canvas.height = innerHeight);
-
-    const columns = Math.floor(w / 14);
-    const drops: number[] = Array(columns).fill(0);
-
-    const characters = "01ﾑﾘｻﾎﾇｺﾊｲｴｱｳｵｶｷｸｹｺｻﾁﾂﾃ" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    let raf = 0;
-    const draw = () => {
-      if (!ctx) return;
-      ctx.fillStyle = `rgba(0, 0, 0, ${0.08})`;
-      ctx.fillRect(0, 0, w, h);
-
-      ctx.fillStyle = `rgba(0, 255, 150, ${opacity})`;
-      ctx.font = "12px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = characters.charAt(Math.floor(Math.random() * characters.length));
-        const x = i * 14;
-        const y = drops[i] * 14;
-        ctx.fillText(text, x, y);
-
-        if (y > h && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-      raf = requestAnimationFrame(draw);
-    };
-
-    const onResize = () => {
-      w = canvas.width = innerWidth;
-      h = canvas.height = innerHeight;
-      const newCols = Math.floor(w / 14);
-      drops.length = newCols;
-      for (let i = 0; i < newCols; i++) drops[i] = drops[i] || 0;
-    };
-
-    window.addEventListener("resize", onResize);
-    draw();
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", onResize);
-    };
-  }, [opacity]);
-
+// ----------------------- CyberGrid Background -----------------------
+const CyberGrid: React.FC = () => {
   return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ mixBlendMode: "screen" }}
-    />
+    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <div 
+        className="absolute inset-0 opacity-[0.15]"
+        style={{
+          backgroundImage: `linear-gradient(#00ff9d 1px, transparent 1px), linear-gradient(90deg, #00ff9d 1px, transparent 1px)`,
+          backgroundSize: '40px 40px',
+          transform: 'perspective(500px) rotateX(60deg) translateY(-100px)',
+          maskImage: 'linear-gradient(to bottom, transparent, black, transparent)'
+        }}
+      />
+      <motion.div 
+        animate={{ y: ['-100%', '200%'] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 w-full h-[20vh] bg-gradient-to-b from-transparent via-[#00ff9d10] to-transparent z-10"
+      />
+    </div>
   );
 };
 
-// ----------------------- Terminal -----------------------
-const Terminal: React.FC<{ lines?: string[] }> = ({
-  lines = [
-    "Initializing training modules...",
-    "Loading labs: [█□□□□□□□□□] 10%",
-    "Fetching lab images...",
-    "Ready. Type 'start' to begin simulation.",
-  ],
-}) => {
-  const [index, setIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
-
+// ----------------------- SystemVitals -----------------------
+const SystemVitals: React.FC = () => {
+  const [nodes, setNodes] = useState(124);
   useEffect(() => {
-    const t = setInterval(() => {
-      setIndex((i) => (i + 1) % lines.length);
-    }, 2600);
-    return () => clearInterval(t);
-  }, [lines.length]);
-
-  useEffect(() => {
-    setProgress(0);
-    let p = 0;
-    const id = setInterval(() => {
-      p += Math.floor(Math.random() * 8);
-      setProgress((prev) => Math.min(100, prev + Math.floor(Math.random() * 12)));
-      if (p > 100) clearInterval(id);
-    }, 500);
-    return () => clearInterval(id);
-  }, [index]);
+    const interval = setInterval(() => setNodes(n => n + (Math.random() > 0.5 ? 1 : -1)), 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="mt-6 w-full bg-black/40 border border-[#00ff9d33] rounded-md p-3 text-left font-mono">
-      
-      {/* Terminal line */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0">
-        <span className="flex items-center gap-2 shrink-0">
-          <span className="w-2 h-2 rounded-full bg-[#00ff9d] shadow-[0_0_8px_#00ff9d]" />
-          <span className="text-[#9ef0c7] text-xs sm:text-sm">
-            training@xsploit:~$
-          </span>
-        </span>
-
-        <span className="text-[#dfffe8] text-xs sm:text-sm break-words leading-relaxed">
-          {lines[index]}
-        </span>
+    <div className="hidden lg:flex flex-col gap-4 absolute left-8 top-1/2 -translate-y-1/2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#00ff9d88]">
+      <div className="space-y-1 border-l border-[#00ff9d33] pl-4">
+        <p className="text-white/40">Network Status</p>
+        <p className="text-[#00ff9d]">Encrypted / AES-256</p>
       </div>
-
-      {/* Progress bar */}
-      <div className="mt-3 w-full bg-[#052016] rounded-full h-2 overflow-hidden">
-        <div
-          className="h-full bg-gradient-to-r from-[#00ff9d] to-[#00ffb0]"
-          style={{
-            width: `${progress}%`,
-            transition: "width 300ms linear",
-          }}
-        />
+      <div className="space-y-1 border-l border-[#00ff9d33] pl-4">
+        <p className="text-white/40">Active Nodes</p>
+        <p className="text-white">{nodes} <span className="animate-pulse">●</span></p>
+      </div>
+      <div className="space-y-1 border-l border-[#00ff9d33] pl-4">
+        <p className="text-white/40">Latency</p>
+        <p className="text-white">14ms</p>
       </div>
     </div>
   );
 };
 
+// ----------------------- Terminal -----------------------
+const Terminal: React.FC = () => {
+  const [text, setText] = useState("");
+  const fullText = ">> system_init --v --target:cyber_labs --user:root";
+  
+  useEffect(() => {
+    let i = 0;
+    const timer = setInterval(() => {
+      setText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) clearInterval(timer);
+    }, 50);
+    return () => clearInterval(timer);
+  }, []);
 
-// ----------------------- HeroContent -----------------------
-const HeroContent: React.FC = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="relative z-20 w-full"
-    >
-      <div className="mx-auto max-w-4xl text-center px-6">
-
-        {/* status pill */}
-        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs tracking-widest uppercase text-[#8ef5c9] border border-[#00ff9d33]">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00ff9d] animate-pulse" />
-          Live Cyber Labs
-        </span>
-
-        {/* main headline */}
-        <h1 className="mt-8 text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white">
-          Learn <span className="text-[#00ff9d]">Ethical Hacking</span>
-        </h1>
-
-        {/* subtle divider */}
-        <div className="mx-auto mt-6 h-[2px] w-24 rounded-full bg-gradient-to-r from-transparent via-[#00ff9d] to-transparent opacity-70" />
-
-        {/* professional sub-headline */}
-        <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg text-gray-400 leading-relaxed">
-          Industry-designed cybersecurity training with real-world attack & defense
-          simulations, SOC-level labs, and expert mentorship.
-        </p>
-
-        {/* info row */}
-        <div className="mt-10 flex flex-wrap justify-center gap-10 text-sm text-gray-400">
-          <div className="flex flex-col items-center">
-            <span className="text-white font-medium">50+</span>
-            <span>Hands-on Labs</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-white font-medium">Beginner → Advanced</span>
-            <span>Skill Levels</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-white font-medium">Career Focused</span>
-            <span>Job-Ready Training</span>
-          </div>
+    <div className="w-full bg-black/60 border border-[#00ff9d22] backdrop-blur-xl rounded-lg p-4 font-mono shadow-2xl text-left">
+      <div className="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#00ff9d20] border border-[#00ff9d50]" />
         </div>
-
-        {/* scroll hint */}
-        <div className="mt-16 flex flex-col items-center text-xs tracking-widest uppercase text-[#7ff7c9] opacity-70">
-          <span>Explore Labs</span>
-          <span className="mt-2 animate-bounce">↓</span>
-        </div>
+        <span className="text-[10px] text-white/30 uppercase tracking-widest ml-2">Console v4.0.2</span>
       </div>
-
-      {/* Terminal */}
-      <div className="mt-0">
-        <Terminal />
+      <div className="text-xs sm:text-sm md:text-base">
+        <span className="text-[#00ff9d] mr-2">➜</span>
+        <span className="text-white/90">{text}</span>
+        <span className="inline-block w-2 h-4 bg-[#00ff9d] ml-1 animate-pulse align-middle" />
       </div>
-    </motion.div>
+    </div>
   );
 };
 
-
-// ----------------------- Hero (Main Export) -----------------------
+// ----------------------- Main Hero -----------------------
+// ----------------------- Main Hero -----------------------
+// ----------------------- Main Hero -----------------------
 const Hero: React.FC = () => {
   return (
-    <section className="relative h-screen max-sm:min-h-[1000px] md:min-h-[800px] flex items-center justify-center bg-black text-white overflow-hidden">
-      {/* Matrix Rain Background */}
-      <MatrixRain opacity={0.14} />
+    <section className="relative min-h-screen w-full flex max-sm:py-20 sm:py-25 lg:py-30 items-center justify-center bg-[#020617] text-white overflow-hidden selection:bg-[#00ff9d] selection:text-black">
+      <CyberGrid />
+      <SystemVitals />
 
-      {/* soft vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-black opacity-40 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,157,0.05)_0%,transparent_70%)]" />
 
-      {/* Scanner border (animated) */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-30 w-[92%] max-w-5xl mx-auto"
-      >
-        <div className="relative">
-          <motion.div
-            className="absolute -inset-1 rounded-2xl pointer-events-none"
-            animate={{ boxShadow: [
-              "0 0 24px 2px rgba(0,255,157,0.12)",
-              "0 0 44px 6px rgba(0,255,157,0.18)",
-              "0 0 18px 2px rgba(0,255,157,0.10)",
-            ] }}
-            transition={{ repeat: Infinity, repeatType: "loop", duration: 3.4 }}
-          />
+      <div className="relative z-10 container mx-auto px-6 max-w-6xl">
+        {/* Grid: Stacked on mobile, 12-col grid on Tablet (md) and up */}
+        <div className="flex md:flex-row max-sm:flex-col md:grid md:grid-cols-12 gap-12 items-center">
+          
+          {/* Left Column: Content */}
+          {/* Mobile: items-center + text-center | Tablet/Laptop: items-start + text-left */}
+          <div className="md:col-span-7 flex flex-col max-sm:items-center md:items-start max-sm:text-center md:text-left w-full">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              {/* Badge: Centered on mobile (mx-auto), Left on Tablet+ (md:mx-0) */}
+              <div className="inline-flex items-center gap-3 px-3 py-1 rounded-full border border-[#00ff9d33] bg-[#00ff9d08] mb-6 mx-auto md:mx-0">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00ff9d] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00ff9d]"></span>
+                </span>
+                <span className ="text-[10px] font-bold tracking-[0.2em] uppercase text-[#00ff9d]">
+                  Secure Connection Established
+                </span>
+              </div>
 
-          <div className="relative bg-black/50 backdrop-blur-md border border-[#0aff9d22] rounded-2xl p-8 md:p-12">
-            <HeroContent />
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight">
+                Master the <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff9d] to-[#00f2ff] drop-shadow-[0_0_15px_rgba(0,255,157,0.3)]">
+                  Digital Frontier
+                </span>
+              </h1>
+
+              {/* Paragraph: Centered on mobile (mx-auto), Left on Tablet+ (md:mx-0) */}
+              <p className="mt-8 text-base sm:text-lg text-slate-400 max-w-xl mx-auto md:mx-0 leading-relaxed">
+                The most advanced cybersecurity playground for ethical hackers. 
+                Deploy real exploits in controlled, high-fidelity sandboxes.
+              </p>
+
+              {/* Buttons: Centered on mobile (justify-center), Left on Tablet+ (md:justify-start) */}
+              <div className="mt-10 flex flex-wrap max-sm:justify-center md:justify-start gap-4">
+                <button 
+                  onClick={() => {
+                    const coursesSection = document.getElementById('courses');
+                    coursesSection?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="px-8 py-4 bg-[#00ff9d] text-black font-bold rounded-none skew-x-[-15deg] hover:bg-white transition-all group"
+                >
+                  <span className="inline-block skew-x-[15deg] group-hover:scale-110 transition-transform">
+                    EXPLORE COURSES
+                  </span>
+                </button>
+                <button 
+                  onClick={() => {
+                    window.location.href = '/contact';
+                  }}
+                  className="px-8 py-4 border border-white/10 hover:border-[#00ff9d] transition-colors rounded-none skew-x-[-15deg] group"
+                >
+                  <span className="inline-block skew-x-[15deg] text-white/70 group-hover:text-[#00ff9d]">
+                    CONTACT US
+                  </span>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Visuals */}
+          <div className="w-full md:col-span-5 relative mt-8 md:mt-0">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="relative max-w-md mx-auto md:max-w-none"
+            >
+              <div className="absolute -inset-10 bg-[#00ff9d10] blur-[100px] rounded-full animate-pulse" />
+              <Terminal />
+              
+              <motion.div 
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -top-10 -right-2 sm:-right-4 p-3 sm:p-4 bg-black/80 border border-white/10 backdrop-blur-md rounded-lg font-mono text-[9px] sm:text-[10px] text-left"
+              >
+                <div className="text-[#00ff9d] mb-1 tracking-tighter sm:tracking-normal">EXPLOIT_PAYLOAD</div>
+                <div className="text-white/40">Status: <span className="text-white font-bold">READY</span></div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
-      </motion.div>
 
-      {/* subtle bottom code strip */}
-      <div className="absolute bottom-6 left-6 right-6 z-10 opacity-60">
-        <div className="font-mono text-xs text-[#7ff7c9] truncate">sudo launch --labs --mode=training --user=guest</div>
       </div>
     </section>
   );
 };
 
 export default Hero;
-
-// Placeholder to prepare canvas.

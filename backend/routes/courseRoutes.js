@@ -5,10 +5,20 @@ import Course from "../models/Course.js";
 const router = Router();
 
 
+
+// GET /api/courses1 — fetch all courses
 router.get("/", async (req, res) => {
-    console.log(`this one`);
-    return res.status(200).json({ message: "Hello from course route!" });
+  console.log("all courses fetch api called");
+  try {
+    const allCourses = await Course.find({});
+    res.json(allCourses);
+  } catch (err) {
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Failed to fetch courses" });
+  }
 });
+
+
 
 router.get("/:slug", async (req, res) => {
     console.log("Course Routes Loaded");
@@ -30,7 +40,7 @@ router.get("/:slug", async (req, res) => {
       return res.status(404).json({ message: "Course not found" });
     }
     
-    res.json({ course });
+    res.json( course );
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
