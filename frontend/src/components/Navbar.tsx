@@ -20,6 +20,7 @@ const Navbar = () => {
   const navLinks = [
     { label: "Home", path: "/", icon: <Terminal size={14} /> },
     { label: "Courses", path: "/courses", icon: <Cpu size={14} /> },
+    { label: "Blogs", path: "/blogs", icon: <Cpu size={14} /> },
     { label: "Contact", path: "/contact", icon: <ShieldCheck size={14} /> },
   ];
 

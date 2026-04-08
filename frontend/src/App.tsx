@@ -14,6 +14,7 @@ import Contact from './pages/Contact';
 import Course from './pages/CoursesPage';
 import ForgotPassword from './pages/ForgotPassword';
 import NotFound from './pages/NotFound';
+import Blogs from './pages/Blog';
 
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
@@ -38,6 +39,7 @@ function App() {
           <Route path="/courses" element={<Course />} />
           <Route path="/course/:courseId" element={<CourseDetails />} />
           <Route path="/profile/:userId" element={<Profile />} />
+          <Route path="/blogs" element={<Blogs />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
 
