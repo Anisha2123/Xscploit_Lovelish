@@ -60,7 +60,7 @@ router.post("/verify-otp", async (req, res) => {
         ),
       });
     }
-
+     
     /* ⌛ OTP EXPIRED */
     if (record.expiresAt < now) {
       return res.status(400).json({ error: "OTP_EXPIRED" });
