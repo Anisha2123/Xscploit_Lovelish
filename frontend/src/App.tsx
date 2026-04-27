@@ -7,8 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Xsploit from "./pages/Xsploit";
 import CourseDetails from './pages/CourseDetails';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 import Profile from './pages/Profile';
 import Contact from './pages/Contact';
 import Course from './pages/CoursesPage';
